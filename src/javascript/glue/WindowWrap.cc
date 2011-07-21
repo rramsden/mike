@@ -84,7 +84,7 @@ namespace mike {
 	  bool match_msg = (e.flags & kMatchMessage) == kMatchMessage;
 
 	  if (!match_msg || (JS_ARGC > 0 && e.message == message))
-	    return JS_BOOL(e.choice);
+	    return JS_BOOL((e.choice == "true"));
 	}
       }
 

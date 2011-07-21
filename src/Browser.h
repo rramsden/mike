@@ -16,19 +16,21 @@ namespace mike
 
   enum PopupType {
     kPopupAlert = 1,
-    kPopupConfirm = 2
+    kPopupConfirm = 2,
+    kPopupPrompt = 3
   };
 
   enum PopupExpectationFlag {
     kMatchMessage = 1,
-    kSkipMessage = 2
+    kSkipMessage = 2,
+    kCancelPrompt = 4
   };
   
   typedef struct popup_expectation {
-    PopupExpectationFlag flags;
+    int flags;
     PopupType kind;
     string message;
-    bool choice;
+    string choice;
   } PopupExpectation;
   
   /**
@@ -294,7 +296,7 @@ namespace mike
      * for it.
      *
      * \param msg Expected message.
-     * \param bool Prefered choice.
+     * \param choice Prefered choice.
      */
     void expectConfirm(string text, bool choice);
 
@@ -303,10 +305,29 @@ namespace mike
      * choice for all of them.
      *
      * \param n Number of expected windows.
-     * \param bool Prefered choice.
+     * \param choice Prefered choice.
      */
     void expectConfirms(int n, bool choice);
 
+    /**
+     * Sets expectation of one prompt box with given message, and sets prefered choice
+     * for it.
+     *
+     * \param msg Expected message.
+     * \param choice Given text.
+     * \param cancel Cancel this prompt.
+     */
+    void expectPrompt(string msg, string choice, bool cancel=false);
+
+    /**
+     * Sets expectation of one prompt box with any message, and sets prefered choice
+     * for it.
+     *
+     * \param choice Given text.
+     * \param cancel Cancel this prompt.
+     */
+    void expectPrompt(string choice, bool cancel=false);
+    
     /**
      * Removes all declared expectations.
      */

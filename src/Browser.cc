@@ -170,7 +170,7 @@ namespace mike
     PopupExpectation e;
     e.kind = kPopupConfirm;
     e.flags = kSkipMessage;
-    e.choice = choice;
+    e.choice = choice ? "true" : "false";
     expectedPopups_.push_back(e);
   }
 
@@ -180,7 +180,7 @@ namespace mike
     e.kind = kPopupConfirm;
     e.flags = kMatchMessage;
     e.message = msg;
-    e.choice = choice;
+    e.choice = choice ? "true" : "false";
     expectedPopups_.push_back(e);
   }
 
@@ -188,6 +188,33 @@ namespace mike
   {
     while (n-- > 0)
       expectConfirm(choice);
+  }
+
+  void Browser::expectPrompt(string msg, string choice, bool cancel/*=false*/)
+  {
+    PopupExpectation e;
+    e.kind = kPopupPrompt;
+    e.flags = kMatchMessage;
+    e.message = msg;
+    e.choice = choice;
+
+    if (cancel)
+      e.flags |= kCancelPrompt;
+    
+    expectedPopups_.push_back(e);
+  }
+
+  void Browser::expectPrompt(string choice, bool cancel/*=false*/)
+  {
+    PopupExpectation e;
+    e.kind = kPopupPrompt;
+    e.flags = kSkipMessage;
+    e.choice = choice;
+
+    if (cancel)
+      e.flags |= kCancelPrompt;
+    
+    expectedPopups_.push_back(e);
   }
 
   void Browser::clearExpectations()
