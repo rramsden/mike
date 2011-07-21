@@ -17,6 +17,10 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testAnyExpectedConfirm);
   CPPUNIT_TEST(testSpecificExpectedConfirm);
   CPPUNIT_TEST(testUnexpectedConfirm);
+  CPPUNIT_TEST(testAnyExpectedPrompt);
+  CPPUNIT_TEST(testSpecificExpectedPrompt);
+  CPPUNIT_TEST(testUnexpectedPrompt);
+  CPPUNIT_TEST(testCancelPrompt);
   CPPUNIT_TEST(testNotFullyMetExpectations);
   CPPUNIT_TEST_SUITE_END();
 
@@ -49,9 +53,9 @@ protected:
   void testUnexpectedAlerts()
   {
     Browser browser;
-    ASSERT_THROW(browser.open("http://localhost:4567/alert.html"), UnexpectedAlertError);
+    ASSERT_THROW(browser.open("http://localhost:4567/alert.html"), UnexpectedPopupError);
     browser.expectAlert("Hello Other Alert!");
-    ASSERT_THROW(browser.open("http://localhost:4567/alert.html"), UnexpectedAlertError);
+    ASSERT_THROW(browser.open("http://localhost:4567/alert.html"), UnexpectedPopupError);
   }
 
   void testAnyExpectedConfirm()
@@ -73,19 +77,53 @@ protected:
   void testUnexpectedConfirm()
   {
     Browser browser;
-    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedConfirmError);
+    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedPopupError);
     browser.expectConfirm("Foobar!", true);
-    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedConfirmError);
+    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedPopupError);
     browser.expectAlert("Bla!");
-    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedConfirmError);
+    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedPopupError);
   }
 
+  void testAnyExpectedPrompt()
+  {
+    Browser browser;
+    browser.expectPrompt("foobar");
+    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/prompt.html");
+    ASSERT_EQUAL(page->evaluate("res"), "foobar");
+  }
+
+  void testSpecificExpectedPrompt()
+  {
+    Browser browser;
+    browser.expectPrompt("What's your name?", "Chris");
+    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/prompt.html");
+    ASSERT_EQUAL(page->evaluate("res"), "Chris");
+  }
+
+  void testUnexpectedPrompt()
+  {
+    Browser browser;
+    ASSERT_THROW(browser.open("http://localhost:4567/prompt.html"), UnexpectedPopupError);
+    browser.expectPrompt("Foobar!", "Bla!");
+    ASSERT_THROW(browser.open("http://localhost:4567/prompt.html"), UnexpectedPopupError);
+    browser.expectAlert("Bla!");
+    ASSERT_THROW(browser.open("http://localhost:4567/prompt.html"), UnexpectedPopupError);
+  }
+
+  void testCancelPrompt()
+  {
+    Browser browser;
+    browser.expectPrompt("What's your name?", kCancelPrompt);
+    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/prompt.html");
+    ASSERT_EQUAL(page->evaluate("res"), "null");
+  }
+  
   void testNotFullyMetExpectations()
   {
     Browser browser;
     browser.expectConfirm("Foobar!");
     browser.expectAlert("Foobar!");
-    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), ExpectationNotMet);
+    ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), ExpectationNotMetError);
   }  
 };
 

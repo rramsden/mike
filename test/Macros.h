@@ -13,17 +13,17 @@
 #define CPPUNIT_ASSERT_THROW(expr, T)					\
   try {									\
     expr;								\
-    ASSERT_MESSAGE(false, "#expr should throw #T exception");		\
+    ASSERT_MESSAGE(false, #expr " should throw " #T " exception");	\
   } catch (T err) {							\
   }
 #endif
 
-#define ASSERT(x) ASSERT_MESSAGE(x, "#x should be true")
-#define ASSERT_NOT(x) ASSERT_MESSAGE(!x, "#x should be false")
-#define ASSERT_EQUAL(x,y) ASSERT_MESSAGE(x == y, "#x should equals #y")
-#define ASSERT_NOT_EQUAL(x,y) ASSERT_MESSAGE(x != y, "#x should not equals #y")
-#define ASSERT_NULL(x) ASSERT_MESSAGE(x == NULL, "#x should be NULL")
-#define ASSERT_NOT_NULL(x) ASSERT_MESSAGE(x != NULL, "#x should not be NULL")
+#define ASSERT(x) ASSERT_MESSAGE(x, #x " should be true")
+#define ASSERT_NOT(x) ASSERT_MESSAGE(!x, #x " should be false")
+#define ASSERT_EQUAL(x,y) ASSERT_MESSAGE(x == y, #x " should equals " #y)
+#define ASSERT_NOT_EQUAL(x,y) ASSERT_MESSAGE(x != y, #x " should not equals " #y)
+#define ASSERT_NULL(x) ASSERT_MESSAGE(x == NULL, #x " should be NULL")
+#define ASSERT_NOT_NULL(x) ASSERT_MESSAGE(x != NULL, #x " should not be NULL")
 #define ASSERT_STR_EQUAL(x,y) ASSERT_EQUAL(string(x), string(y))
 #define ASSERT_STR_NOT_EQUAL(x,y) ASSERT_NOT_EQUAL(string(x), string(y))
 #define ASSERT_THROW(e,t) CPPUNIT_ASSERT_THROW(e, t)

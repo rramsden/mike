@@ -23,6 +23,7 @@ namespace mike
       
       JS_FUNCTION_D(Alert);
       JS_FUNCTION_D(Confirm);
+      JS_FUNCTION_D(Prompt);
     };
   }
 }

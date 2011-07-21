@@ -190,30 +190,39 @@ namespace mike
       expectConfirm(choice);
   }
 
-  void Browser::expectPrompt(string msg, string choice, bool cancel/*=false*/)
+  void Browser::expectPrompt(string msg, string choice)
   {
     PopupExpectation e;
     e.kind = kPopupPrompt;
     e.flags = kMatchMessage;
     e.message = msg;
     e.choice = choice;
-
-    if (cancel)
-      e.flags |= kCancelPrompt;
-    
     expectedPopups_.push_back(e);
   }
 
-  void Browser::expectPrompt(string choice, bool cancel/*=false*/)
+  void Browser::expectPrompt(string msg, int flags)
+  {
+    PopupExpectation e;
+    e.kind = kPopupPrompt;
+    e.flags = kMatchMessage | flags;
+    e.message = msg;
+    expectedPopups_.push_back(e);
+  }
+
+  void Browser::expectPrompt(string choice)
   {
     PopupExpectation e;
     e.kind = kPopupPrompt;
     e.flags = kSkipMessage;
     e.choice = choice;
+    expectedPopups_.push_back(e);
+  }
 
-    if (cancel)
-      e.flags |= kCancelPrompt;
-    
+  void Browser::expectPrompt(int flags)
+  {
+    PopupExpectation e;
+    e.kind = kPopupPrompt;
+    e.flags = kSkipMessage | flags;
     expectedPopups_.push_back(e);
   }
 

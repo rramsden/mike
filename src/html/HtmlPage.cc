@@ -284,7 +284,7 @@ namespace mike
 
     if (!expects.empty()) {
       PopupExpectation first = expects.front();
-      ExpectationNotMet err(first.kind, first.message);
+      ExpectationNotMetError err(first.kind, first.message);
       browser->clearExpectations();
       throw err;
     }

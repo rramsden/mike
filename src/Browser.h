@@ -17,7 +17,7 @@ namespace mike
   enum PopupType {
     kPopupAlert = 1,
     kPopupConfirm = 2,
-    kPopupPrompt = 3
+    kPopupPrompt = 4
   };
 
   enum PopupExpectationFlag {
@@ -44,55 +44,60 @@ namespace mike
     virtual const char* what() const throw() { return "Window index out of range"; }
   };
 
-  class UnexpectedAlertError : public exception
+  /**
+   * Base class for popup expectations. Don't use directly!
+   */
+  class ExpectationError : public exception
   {
   public:
-    explicit UnexpectedAlertError(string msg) : msg_(msg) {}
-    virtual ~UnexpectedAlertError() throw() {};
-    virtual const char* what() const throw() { return ("Unexpected alert: " + string(msg_)).c_str(); }
-  protected:
-    string msg_;
-  };
-
-  class UnexpectedConfirmError : public exception
-  {
-  public:
-    explicit UnexpectedConfirmError(string msg) : msg_(msg) {}
-    virtual ~UnexpectedConfirmError() throw() {};
-    virtual const char* what() const throw() { return ("Unexpected confirm: " + string(msg_)).c_str(); }
-  protected:
-    string msg_;
-  };
-  
-  class ExpectationNotMet : public exception
-  {
-  public:
-    explicit ExpectationNotMet(PopupType type, string msg) : type_(type), msg_(msg) {}
-    virtual ~ExpectationNotMet() throw() {};
-    virtual const char* what() const throw() { return ("Unexpected " + type() + ": " + string(msg_)).c_str(); }
-    const string type() const
+    explicit ExpectationError(PopupType type, string msg) : type_(type), msg_(msg) {}
+    virtual ~ExpectationError() throw() {};
+    virtual const char* what() const throw() =0;
+    virtual const string type() const
     {
       switch (type_) {
       case kPopupAlert:   return "alert";
       case kPopupConfirm: return "confirm";
+      case kPopupPrompt:  return "prompt";
       }
     }
   protected:
-    string msg_;
     PopupType type_;
+    string msg_;
   };
 
   /**
-   * Instance of this class represents single, separatelly configured browser. You can configure
-   * browser by passing various parameters to constructor (configurable language, user agent string
-   * and cookies/javascript availability).
+   * Error raised when some unexpected popup appears.
+   */
+  class UnexpectedPopupError : public ExpectationError
+  {
+  public:
+    explicit UnexpectedPopupError(PopupType type, string msg) : ExpectationError(type, msg) {}
+    virtual ~UnexpectedPopupError() throw() {}
+    virtual const char* what() const throw() { return ("Unexpected " + type() + ": " + string(msg_)).c_str(); }
+  };
+
+  /**
+   * Error raised when some defined expectation has not been met during page processing.
+   */
+  class ExpectationNotMetError : public ExpectationError
+  {
+  public:
+    explicit ExpectationNotMetError(PopupType type, string msg) : ExpectationError(type, msg) {}
+    virtual ~ExpectationNotMetError() throw() {};
+    virtual const char* what() const throw() { return ("Expectation " + type() + " not met: " + string(msg_)).c_str(); }
+  };
+
+  /**
+   * Instance of this class represents single, separatelly configured browser. You can
+   * configure browser by passing various parameters to constructor (configurable language,
+   * user agent string and cookies/javascript availability).
    *
    * \code
-   *   Browser* browser = new Browser("en", "", true, true); // language, custom user agent, cookies, javascript
-   *   HtmlPage* page = (HtmlPage*)browser->open("http://www.mypage.com");
+   *   Browser browser = Browser("en", "", true, true); // language, custom user agent, cookies, javascript
+   *   PageRef<HtmlPage> page = browser.open("http://www.mypage.com").asHtml();
    *   assert(page->getTitle() == "Hello My Page!");
    *   browser.closeAll();
-   *   delete browser;
    * \endcode
    */
   class Browser
@@ -311,22 +316,24 @@ namespace mike
 
     /**
      * Sets expectation of one prompt box with given message, and sets prefered choice
-     * for it.
+     * for it. If no choice given then prompt will be cancelled.
      *
      * \param msg Expected message.
      * \param choice Given text.
-     * \param cancel Cancel this prompt.
+     * \param flags Should be always 'kCancelPrompt'.
      */
-    void expectPrompt(string msg, string choice, bool cancel=false);
-
+    void expectPrompt(string msg, string choice);
+    void expectPrompt(string msg, int flags);
+      
     /**
      * Sets expectation of one prompt box with any message, and sets prefered choice
-     * for it.
+     * for it. If no choice given then prompt will be cancelled.
      *
      * \param choice Given text.
-     * \param cancel Cancel this prompt.
+     * \param flags Should be always 'kCancelPrompt'.
      */
-    void expectPrompt(string choice, bool cancel=false);
+    void expectPrompt(string choice);
+    void expectPrompt(int flags);
     
     /**
      * Removes all declared expectations.

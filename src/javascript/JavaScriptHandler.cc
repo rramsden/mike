@@ -57,16 +57,11 @@ namespace mike
 	  page_->getEnclosingWindow()->getBrowser()->clearExpectations();
 	    
 	  if (!exp.IsEmpty()) {
-	    int exp_type = exp->Get(String::New("expectation"))->Int32Value();
-	    String::Utf8Value str(exp->Get(String::New("message"))->ToString());
-	    string exp_msg = *str;
+	    PopupType type = static_cast<PopupType>(exp->Get(String::New("expectation"))->Int32Value());
+	    String::Utf8Value msg(exp->Get(String::New("message"))->ToString());
 
-	    switch (exp_type) {
-	    case kPopupAlert:
-	      throw UnexpectedAlertError(exp_msg);
-	    case kPopupConfirm:
-	      throw UnexpectedConfirmError(exp_msg);
-	    }
+	    // Throw info about unexpected popup!
+	    throw UnexpectedPopupError(type, string(*msg));
 	  }
 	} else {
 	  printf("JS: Runtime error\n");

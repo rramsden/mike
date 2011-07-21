@@ -16,6 +16,7 @@ namespace mike {
       Handle<Template> proto_t = t->PrototypeTemplate();
       proto_t->Set(JS_STR("alert"), JS_FUNC_TPL(JS_Alert));
       proto_t->Set(JS_STR("confirm"), JS_FUNC_TPL(JS_Confirm));
+      proto_t->Set(JS_STR("prompt"), JS_FUNC_TPL(JS_Prompt));
 
       // Instance
       Handle<ObjectTemplate> instance_t = t->InstanceTemplate();
@@ -41,8 +42,6 @@ namespace mike {
     JS_FUNCTION(WindowWrap, Alert) // alert(msg)
     {
       JS_ARG_UTF8(message, 0);
-      
-      // Pick up expectations defined in browser.
       list<PopupExpectation>& expects = GetWindow()->getBrowser()->expectedPopups_;
 
       // Check if browser was expecting this alert.
@@ -71,8 +70,6 @@ namespace mike {
     JS_FUNCTION(WindowWrap, Confirm) // confirm(msg)
     {
       JS_ARG_UTF8(message, 0);
-
-      // Pick up expectations defined in browser.
       list<PopupExpectation>& expects = GetWindow()->getBrowser()->expectedPopups_;
 
       // Check if browser was expecting this confirmation.
@@ -94,6 +91,38 @@ namespace mike {
       err->Set(JS_STR("expectation"), JS_INT(kPopupConfirm));
       err->Set(JS_STR("message"), JS_STR(message.c_str()));
 
+      JS_THROW_OBJ(err);
+    }
+    JS_END
+
+    JS_FUNCTION(WindowWrap, Prompt) // prompt(msg)
+    {
+      JS_ARG_UTF8(message, 0);
+      list<PopupExpectation>& expects = GetWindow()->getBrowser()->expectedPopups_;
+
+      // Check if browser was expecting this prompt.
+      if (!expects.empty()) {
+	PopupExpectation e = expects.front();
+	expects.pop_front();
+
+	if (e.kind == kPopupPrompt) {
+	  bool match_msg = (e.flags & kMatchMessage) == kMatchMessage;
+
+	  if (!match_msg || (JS_ARGC > 0 && e.message == message)) {
+	    if ((e.flags & kCancelPrompt) == kCancelPrompt) {
+	      return JS_NULL;
+	    } else
+	      return JS_STR(e.choice.c_str());
+	  }
+	}
+      }
+
+      // If prompt was unexpected then throw v8 exception to disallow
+      // continue execution.
+      Handle<Object> err(JS_OBJ());
+      err->Set(JS_STR("expectation"), JS_INT(kPopupPrompt));
+      err->Set(JS_STR("message"), JS_STR(message.c_str()));
+      
       JS_THROW_OBJ(err);
     }
     JS_END
