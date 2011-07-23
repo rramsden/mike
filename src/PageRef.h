@@ -12,8 +12,8 @@ namespace mike
    * being loaded.
    *
    * \code
-   *   Browser* browser = new Browser()
-   *   PageRef<HtmlPage> page = browser->open("http://cuboxsa.com/");
+   *   Browser browser;
+   *   PageRef<HtmlPage> page = browser.open("http://cuboxsa.com/");
    *   page->click("Contact");
    *   assert(page->getUrl() == "http://cuboxsa.com/contact.html");
    * \endcode
