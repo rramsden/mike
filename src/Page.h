@@ -14,7 +14,7 @@ namespace mike
   
   class XmlPage;
   class HtmlPage;
-  
+
   /**
    * Available page types.
    */
@@ -24,6 +24,16 @@ namespace mike
     kTextPage,
     kXmlPage,
     kHtmlPage
+  };
+
+  class PageConversionError : public exception
+  {
+  public:
+    explicit PageConversionError(string msg) : msg_(msg) {};
+    virtual ~PageConversionError() throw() {};
+    virtual const char* what() const throw() { return msg_.c_str(); }
+  private:
+    string msg_;
   };
   
   /**
@@ -149,6 +159,9 @@ namespace mike
      */
     string getUrlFor(string url);
 
+    HtmlPage* asHtml();
+    XmlPage* asXml();
+    
   protected:
     http::Request* request_;
     PageType type_;

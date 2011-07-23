@@ -119,6 +119,23 @@ namespace mike
 
     return result;
   }
+
+  XmlPage* Page::asXml()
+  {
+    if (isXml())
+      return static_cast<XmlPage*>(this);
+    else
+      throw PageConversionError("This is not an XML page");
+  }
+
+  HtmlPage* Page::asHtml()
+  {
+    if (isHtml())
+      return static_cast<HtmlPage*>(this);
+    else
+      throw PageConversionError("This is not an HTML page");
+  }
+  
   
   //============================= OPERATIONS ===================================
   
