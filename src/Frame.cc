@@ -12,44 +12,40 @@ namespace mike
 
   Frame::Frame()
   {
-    history_ = new History();
   }
   
   Frame::Frame(Window* window)
   {
     window_ = window;
-    history_ = new History();
   }
 
   Frame::Frame(Frame* parent)
   {
     window_ = parent->getWindow();
-    history_ = new History();
   }
   
   Frame::~Frame()
   {
-    delete history_;
   }
 
   //============================= ACCESS     ===================================
   
   void Frame::setPage(Page* page)
   {
-    history_->push(page);
+    history_.push(page);
   }
   
-  Page* Frame::getPage() const
+  Page* Frame::getPage()
   {
-    return history_->getCurrent();
+    return history_.getCurrent();
   }
 
-  Page* Frame::getEnclosedPage() const
+  Page* Frame::getEnclosedPage()
   {
     return getPage();
   }
 
-  History* Frame::getHistory() const
+  History Frame::getHistory() const
   {
     return history_;
   }

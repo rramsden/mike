@@ -138,25 +138,4 @@ namespace mike
     parent_ = parent;
     frame_  = new Frame(this);
   }
-
-  /*
-  void Window::goTo(string url)
-  {
-    if (!url.empty() && url != "about:blank") {
-      http::Request* request = http::Request::Get(url);
-      
-      if (browser_->isCookieEnabled()) {
-	request->enableCookieSession(browser_->getSessionToken());
-      }
-      
-      Page* page = Page::Build(request);
-
-      if (page->isHtml()) {
-	page->toHtmlPage()->openInFrame(frame_);
-      } else {
-	page->openInFrame(frame_);
-      }
-    }
-  }
-  */
 }

@@ -42,9 +42,9 @@ namespace mike
   string Browser::getUserAgent() const
   {
     if (customUserAgent_.empty()) {
-      char* tpl = (char*)MIKE_USER_AGENT;
+      string tpl = MIKE_USER_AGENT;
       char agent[255];
-      sprintf(agent, tpl, OS_TYPE, CPU_ARCH, MIKE_VERSION);
+      sprintf(agent, tpl.c_str(), OS_TYPE, CPU_ARCH, MIKE_VERSION);
       return agent;
     } else {
       return customUserAgent_;
@@ -237,7 +237,7 @@ namespace mike
   {
     Window* window = newWindow();
     Page* page = Page::Open(url, cookieEnabled_, sessionToken_);
-    window->setPage(page);    
+    window->setPage(page);
     return page;
   }
 

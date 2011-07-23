@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include "History.h"
+
 namespace mike
 {
   using namespace std;
@@ -11,7 +13,6 @@ namespace mike
   class Browser;
   class Window;
   class Page;
-  class History;
 
   /**
    * Frame has two jobs to do. First, each window contains at least one frame - you can
@@ -57,13 +58,13 @@ namespace mike
     /**
      * \return Currently open page. 
      */
-    Page* getPage() const;
-    Page* getEnclosedPage() const;
+    Page* getPage();
+    Page* getEnclosedPage();
 
     /**
      * \return History container for this frame.
      */
-    History* getHistory() const;
+    History getHistory() const;
 
     /**
      * \return Window which contains this frame.
@@ -89,8 +90,8 @@ namespace mike
 
   protected:
     string name_;
+    History history_;
     Window* window_;
-    History* history_;
     Frame* parent_;
   };
 }

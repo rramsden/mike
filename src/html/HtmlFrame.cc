@@ -15,12 +15,12 @@ namespace mike
 
   //============================= ACCESS     ===================================
 
-  HtmlPage* HtmlFrame::getPage() const
+  HtmlPage* HtmlFrame::getPage()
   {
     return (HtmlPage*)Frame::getPage();
   }
 
-  HtmlPage* HtmlFrame::getEnclosedPage() const
+  HtmlPage* HtmlFrame::getEnclosedPage()
   {
     return getPage();
   }

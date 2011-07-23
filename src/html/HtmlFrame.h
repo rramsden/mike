@@ -45,8 +45,8 @@ namespace mike
   {
   public:
     explicit HtmlFrame(Frame* frame);
-    HtmlPage* getPage() const;
-    HtmlPage* getEnclosedPage() const;
+    HtmlPage* getPage();
+    HtmlPage* getEnclosedPage();
   };
 }
 

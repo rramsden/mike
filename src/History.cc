@@ -63,7 +63,8 @@ namespace mike
     // or it's gonna turn your skull into trophy! :]
     if (distance < 0) {
       if ((distance = abs(distance) <= back_.size() ? distance : -back_.size()) != 0) {
-	advance((it = back_.end()), distance+1);
+	it = back_.end();
+	advance(it, distance+1);
 	forward_.push_front(current_);
 	forward_.splice(forward_.begin(), back_, it, back_.end());
 	current_ = back_.back();
@@ -71,7 +72,8 @@ namespace mike
       }
     } else if (distance > 0) {
       if ((distance = distance <= forward_.size() ? distance : forward_.size()) != 0) {
-	advance((it = forward_.begin()), distance-1);
+	it = forward_.begin();
+	advance(it, distance-1);
 	back_.push_back(current_);
 	back_.splice(back_.end(), forward_, forward_.begin(), it);
 	current_ = forward_.front();
