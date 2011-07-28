@@ -37,9 +37,8 @@ namespace mike
 
   void History::push(Page* page)
   {
-    if (current_) {
+    if (current_)
       back_.push_back(current_);
-    }
     
     current_ = page;
     delete_all< list<Page*> >(&forward_);

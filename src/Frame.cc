@@ -28,8 +28,8 @@ namespace mike
   
   void Frame::setPage(Page* page)
   {
-    page->enclose(this);
     history_.push(page);
+    page->enclose(this);
   }
   
   Page* Frame::getPage()

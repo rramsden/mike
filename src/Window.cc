@@ -15,11 +15,11 @@ namespace mike
     init();
   }
 
-  Window::Window(Window* parent)
-    : Frame(parent->browser_)
+  Window::Window(Window* parent_window)
+    : Frame(parent_window->browser_)
   {
     init();
-    parentWindow_ = parent;
+    parentWindow_ = parent_window;
   }
 
   //============================= ACCESS     ===================================

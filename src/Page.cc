@@ -46,19 +46,15 @@ namespace mike
     throw "Invalid request."; // just in case, should never appear...
   }
 
-  static int num = 0;
-  
   Page::Page(Request* request, PageType type/*=kUnknownPage*/)
     : type_(type)
   {
     request_ = request;
     frame_ = NULL;
-    printf("CRE: %d\n", ++num);
   }
 
   Page::~Page()
   {
-    printf("DEL: %d\n", --num);
     delete request_;
   }
 

@@ -79,7 +79,7 @@ namespace mike
   {
     delete eventHandler_;
     delete javaScriptHandler_;
-    delete_all< vector<HtmlFrame*> >(&frames_);
+    delete_all< vector<Frame*> >(&frames_);
   }
 
   //============================= ACCESS     ===================================
@@ -177,12 +177,10 @@ namespace mike
   {
     try {
       HtmlElement* title = getElementByXpath("//html/head/title");
-      return  title->getContent();
+      return title->getContent();
     } catch (ElementNotFoundError err) {
-      // nothing...
+      return "";
     }
-
-    return "";
   }
 
   string HtmlPage::getTitleText()
@@ -190,12 +188,12 @@ namespace mike
     return getTitle();
   }
 
-  vector<HtmlFrame*>& HtmlPage::getFrames()
+  vector<Frame*>& HtmlPage::getFrames()
   {
     return frames_;
   }
 
-  HtmlFrame* HtmlPage::getFrame(int n)
+  Frame* HtmlPage::getFrame(int n)
   {
     if (n < frames_.size()) {
       return frames_[n];
@@ -204,9 +202,9 @@ namespace mike
     }
   }
 
-  HtmlFrame* HtmlPage::getFrame(string name)
+  Frame* HtmlPage::getFrame(string name)
   {
-    for (vector<HtmlFrame*>::iterator it = frames_.begin(); it != frames_.end(); it++) {
+    for (vector<Frame*>::iterator it = frames_.begin(); it != frames_.end(); it++) {
       if ((*it)->getName() == name) {
 	return *it;
       }
@@ -215,7 +213,7 @@ namespace mike
     throw NamedFrameNotExistsError(name);
   }
 
-  HtmlFrame* HtmlPage::getNamedFrame(string name)
+  Frame* HtmlPage::getNamedFrame(string name)
   {
     return getFrame(name);
   }
@@ -225,10 +223,10 @@ namespace mike
   void HtmlPage::reload()
   {
     Page::reload();
+    delete_all< vector<Frame*> >(&frames_);
 
-    if (frame_) {
+    if (frame_)
       enclose(frame_);
-    }
   }
 
   string HtmlPage::evaluate(string script)
@@ -374,7 +372,7 @@ namespace mike
   void HtmlPage::loadFrames()
   {
     if (frame_) {
-      delete_all< vector<HtmlFrame*> >(&frames_);
+      delete_all< vector<Frame*> >(&frames_);
       
       vector<HtmlElement*> frames = getElementsByXpath("//iframe | //frameset//frame");
       Browser* browser = frame_->getBrowser();
@@ -387,14 +385,14 @@ namespace mike
 	    string uri = getUrlFor(elem->getAttribute("src"));
 	    Page* page = Page::Open(uri, browser->isCookieEnabled(), browser->getSessionToken());
 
-	    HtmlFrame* frame = new HtmlFrame(frame_);
+	    Frame* frame = new Frame(frame_);
 	    frames_.push_back(frame);
 
 	    if (elem->hasAttribute("name")) {
 	      frame->setName(elem->getAttribute("name"));
 	    }
-	    
-	    page->enclose((Frame*)frame);
+
+	    frame->setPage(page);
 	  } catch (ConnectionError err) {
 	    // TODO: debug info...
 	  }

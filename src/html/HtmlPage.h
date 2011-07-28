@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 
+#include "Frame.h"
 #include "xml/XmlPage.h"
 #include "html/HtmlElement.h"
-#include "html/HtmlFrame.h"
 #include "html/HtmlEventHandler.h"
 #include "javascript/JavaScriptHandler.h"
 
@@ -26,6 +26,30 @@ namespace mike
     kByXpath,
     kByCss,
     kById
+  };
+
+  /**
+   * Error raised when specified frame index is out of range.
+   */
+  class FrameNotExistsError : public exception
+  {
+  public:
+    explicit FrameNotExistsError() {};
+    virtual ~FrameNotExistsError() throw() {};
+    virtual const char* what() const throw() { return "Frame index out of range"; }
+  };
+
+  /**
+   * Error raised when specified named frame does not exist.
+   */
+  class NamedFrameNotExistsError : public FrameNotExistsError
+  {
+  public:
+    explicit NamedFrameNotExistsError(string name) : name_(name) {}
+    virtual ~NamedFrameNotExistsError() throw() {};
+    virtual const char* what() const throw() { return ("Frame " + name_ + " doesn't exist").c_str(); }
+  protected:
+    string name_;
   };
   
   /**
@@ -169,7 +193,7 @@ namespace mike
     /**
      * \return All frames from within this page.
      */
-    vector<HtmlFrame*>& getFrames();
+    vector<Frame*>& getFrames();
 
     /**
      * If number given then returns frame from given index on the list, if string
@@ -179,9 +203,9 @@ namespace mike
      * \param name Frame name.
      * \return Specified frame.
      */
-    HtmlFrame* getFrame(int n);
-    HtmlFrame* getFrame(string name);
-    HtmlFrame* getNamedFrame(string name);
+    Frame* getFrame(int n);
+    Frame* getFrame(string name);
+    Frame* getNamedFrame(string name);
 
     /**
      * Evaluates given javascript within page context.
@@ -202,7 +226,7 @@ namespace mike
     htmlDocPtr doc_;
     HtmlEventHandler* eventHandler_;
     JavaScriptHandler* javaScriptHandler_;
-    vector<HtmlFrame*> frames_;
+    vector<Frame*> frames_;
     
     // override
     virtual void enclose(Frame* frame);

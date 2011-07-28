@@ -18,7 +18,6 @@ class MikePageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetUrl);
   CPPUNIT_TEST(testGetStream);
   CPPUNIT_TEST(testGetEnclosingFrame);
-  CPPUNIT_TEST(testMultipleEncloseProtection);
   CPPUNIT_TEST(testGetEnclosingWindow);
   CPPUNIT_TEST_SUITE_END();
 
@@ -64,15 +63,6 @@ protected:
     Browser browser;
     Page* page = browser.open("http://localhost:4567/simple.txt");
     ASSERT_EQUAL(page->getEnclosingFrame()->getPage(), page);
-  }
-
-  void testMultipleEncloseProtection()
-  {
-    Browser browser;
-    Page* page = browser.open("http://localhost:4567/simple.txt");
-    Window *window = new Window(&browser);
-    window->setPage(page);
-    ASSERT_EQUAL(page->getEnclosingWindow(), browser.getWindow(0));
   }
 
   void testGetEnclosingWindow()

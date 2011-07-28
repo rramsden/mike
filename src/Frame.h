@@ -37,6 +37,8 @@ namespace mike
     
     /**
      * Assigns page to this frame.
+     * 
+     * TODO: move to protected!
      *
      * \param page Page to open in this frame.
      */
@@ -54,6 +56,8 @@ namespace mike
     
     /**
      * Sets name of this frame.
+     *
+     * TODO: move to protected!
      *
      * \param name New name for this frame.
      */

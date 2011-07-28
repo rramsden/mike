@@ -39,7 +39,7 @@ namespace mike
      *
      * \param paren Parent window. 
      */
-    explicit Window(Window* parent);
+    explicit Window(Window* parent_window);
 
     // override
     virtual void close();

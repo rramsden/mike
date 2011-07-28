@@ -191,7 +191,7 @@ protected:
   {
     Browser* browser = new Browser();
     HtmlPage* page = (HtmlPage*)browser->open("http://localhost:4567/iframes.html");
-    vector<HtmlFrame*> frames = page->getFrames();
+    vector<Frame*> frames = page->getFrames();
     ASSERT_EQUAL(frames.size(), 2);
     ASSERT_EQUAL(frames[0]->getPage()->getUrl(), "http://localhost:4567/iframes/1.html");
     delete browser;
@@ -201,7 +201,7 @@ protected:
   {
     Browser* browser = new Browser();
     HtmlPage* page = (HtmlPage*)browser->open("http://localhost:4567/frameset.html");
-    vector<HtmlFrame*> frames = page->getFrames();
+    vector<Frame*> frames = page->getFrames();
     ASSERT_EQUAL(frames.size(), 2);
     ASSERT_EQUAL(frames[0]->getPage()->getUrl(), "http://localhost:4567/iframes/1.html");
     delete browser;
