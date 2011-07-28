@@ -82,3 +82,11 @@ with your version of GNU m4, then you have to download and install exactly versi
 and replace `gm4` binary (if exists): 
 
     sudo ln -sf /usr/local/bin/m4 /usr/bin/gm4
+
+## Note on Patches/Pull Requests
+
+* Fork the project.
+* <strong>Read the [contributors guide](https://github.com/nu7hatch/mike/wiki) on wiki</strong>.
+* Make your feature addition or bug fix.
+* Add tests for it!
+* Send me a pull request. Bonus points for topic branches.
