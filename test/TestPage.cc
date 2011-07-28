@@ -53,7 +53,7 @@ protected:
   
   void testGetStream()
   {
-    Page* page = Page::Open("http://localhost:4567/simple.txt");;
+    Page* page = Page::Open("http://localhost:4567/simple.txt");
     ASSERT_NOT_NULL(page->getStream());
     ASSERT_EQUAL(page->getStream()->str(), "Simple!");
     delete page;
@@ -61,29 +61,25 @@ protected:
 
   void testGetEnclosingFrame()
   {
-    Browser* browser = new Browser();
-    Page* page = browser->open("http://localhost:4567/simple.txt");
+    Browser browser;
+    Page* page = browser.open("http://localhost:4567/simple.txt");
     ASSERT_EQUAL(page->getEnclosingFrame()->getPage(), page);
-    delete browser;
   }
 
   void testMultipleEncloseProtection()
   {
-    Browser* browser = new Browser();
-    Page* page = browser->open("http://localhost:4567/simple.txt");
-    Window *window = new Window(browser);
+    Browser browser;
+    Page* page = browser.open("http://localhost:4567/simple.txt");
+    Window *window = new Window(&browser);
     window->setPage(page);
-    ASSERT_EQUAL(page->getEnclosingWindow(), browser->getWindow(0));
-    delete browser;
-    delete window;
+    ASSERT_EQUAL(page->getEnclosingWindow(), browser.getWindow(0));
   }
 
   void testGetEnclosingWindow()
   {
-    Browser* browser = new Browser();
-    Page* page = browser->open("http://localhost:4567/simple.txt");
-    ASSERT_EQUAL(page->getEnclosingWindow(), browser->getWindow(0));
-    delete browser;
+    Browser browser = Browser();
+    Page* page = browser.open("http://localhost:4567/simple.txt");
+    ASSERT_EQUAL(page->getEnclosingWindow(), browser.getWindow(0));
   }
 
 };

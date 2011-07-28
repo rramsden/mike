@@ -33,7 +33,6 @@ TEST_FILES = \
 	test/TestHtmlElement.cc \
 	test/TestHistory.cc \
 	test/TestBrowser.cc \
-	test/TestWindow.cc \
 	test/TestUtils.cc \
 	test/TestPector.cc \
 	test/TestJavaScriptWindow.cc \

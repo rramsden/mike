@@ -69,11 +69,10 @@ protected:
 
   void testLinkClick()
   {
-    Browser* browser = new Browser();
-    PageRef<HtmlPage> page = (HtmlPage*)browser->open("http://localhost:4567/anchors.html");
+    Browser browser;
+    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/anchors.html");
     page->clickLink("I am a link!");
     ASSERT_EQUAL(page->getUrl(), "http://localhost:4567/fields.html");
-    delete browser;
   }
 };
 

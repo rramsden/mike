@@ -46,15 +46,19 @@ namespace mike
     throw "Invalid request."; // just in case, should never appear...
   }
 
+  static int num = 0;
+  
   Page::Page(Request* request, PageType type/*=kUnknownPage*/)
     : type_(type)
   {
     request_ = request;
     frame_ = NULL;
+    printf("CRE: %d\n", ++num);
   }
 
   Page::~Page()
   {
+    printf("DEL: %d\n", --num);
     delete request_;
   }
 
@@ -102,7 +106,7 @@ namespace mike
 
   Window* Page::getEnclosingWindow()
   {
-    return frame_ ? frame_->getWindow() : NULL;
+    return frame_ ? static_cast<Window*>(frame_->getTop()) : NULL;
   }
 
   string Page::getUrlFor(string url)
@@ -146,9 +150,7 @@ namespace mike
 
   void Page::enclose(Frame* frame)
   {
-    if (frame_ == NULL) {
+    if (frame_ == NULL)
       frame_ = frame;
-      frame_->setPage(this);
-    }
   }
 }

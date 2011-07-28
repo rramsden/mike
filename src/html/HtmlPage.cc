@@ -304,7 +304,7 @@ namespace mike
 
   void HtmlPage::processScripts()
   {
-    if (frame_ && frame_->getWindow()->getBrowser()->isJavaEnabled()) {
+    if (frame_ && frame_->getBrowser()->isJavaEnabled()) {
       // We need to be sure that there is no active javascript context before scripts
       // processing. Everything has to be run in fresh context here.
       delete javaScriptHandler_;
@@ -342,7 +342,7 @@ namespace mike
   bool HtmlPage::loadAsset(string uri, string* content)
   {
     try {
-      Browser* browser = frame_->getWindow()->getBrowser();
+      Browser* browser = frame_->getBrowser();
       Page* asset = Page::Open(uri, browser->isCookieEnabled(), browser->getSessionToken(), true);
       *content = asset->getContent();
       delete asset;
@@ -377,7 +377,7 @@ namespace mike
       delete_all< vector<HtmlFrame*> >(&frames_);
       
       vector<HtmlElement*> frames = getElementsByXpath("//iframe | //frameset//frame");
-      Browser* browser = frame_->getWindow()->getBrowser();
+      Browser* browser = frame_->getBrowser();
 
       for (vector<HtmlElement*>::iterator it = frames.begin(); it != frames.end(); it++) {
 	HtmlElement* elem = *it;

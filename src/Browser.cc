@@ -116,13 +116,6 @@ namespace mike
     return onLine_;
   }
   
-  Window* Browser::newWindow()
-  {
-    Window* window = new Window(this);
-    windows_.push_back(window);
-    return window;
-  }
-  
   // XXX: in the future it should return read only list...
   list<Window*>& Browser::getWindows()
   {
@@ -244,6 +237,11 @@ namespace mike
   Page* Browser::getPage(string url)
   {
     open(url);
+  }
+
+  Window* Browser::newWindow()
+  {
+    return new Window(this);
   }
   
   void Browser::closeAll()

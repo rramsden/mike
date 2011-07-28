@@ -1,5 +1,5 @@
-#ifndef _MIKE_BROWSER_FRAME_H_
-#define _MIKE_BROWSER_FRAME_H_
+#ifndef _MIKE_FRAME_H_
+#define _MIKE_FRAME_H_
 
 #include <vector>
 #include <string>
@@ -11,22 +11,11 @@ namespace mike
   using namespace std;
 
   class Browser;
-  class Window;
   class Page;
 
   /**
-   * Frame has two jobs to do. First, each window contains at least one frame - you can
-   * consider it as main window content. Also each page may contain many frames representing
-   * DOM 'iframe' and 'frame' elements. In second case frames are attached to main window
-   * through frame which contains opened page.
-   *
-   * \code
-   *   Frame* frame = new Frame(window);
-   *   frame->setPage(page);
-   *   //...
-   *   frame->cleanup();
-   *   delete frame;
-   * \endcode
+   * Frame is a base class for all window objects. Also manages iframe and frameset
+   * elements within HTML page.
    *
    * Each frame maintains it's own history container, so you can navigate through all
    * recently opened page.
@@ -35,19 +24,17 @@ namespace mike
   {
   public:
     /**
-     * Creates instance of frame within given window.
-     *
-     * \param windwo Window which contains this frame.
+     * Creates instance of frame.
      */
-    explicit Frame();
-    explicit Frame(Window* window);
-    explicit Frame(Frame* frame);
+    explicit Frame(Browser* browser);
     
     /**
-     * Destructor.
+     * Creates instance of frame within another one.
+     *
+     * \param frame Parent frame.
      */
-    virtual ~Frame();
-
+    explicit Frame(Frame* parent);
+    
     /**
      * Assigns page to this frame.
      *
@@ -59,22 +46,11 @@ namespace mike
      * \return Currently open page. 
      */
     Page* getPage();
-    Page* getEnclosedPage();
 
     /**
-     * \return History container for this frame.
+     * \return URL of currently open page.
      */
-    History getHistory() const;
-
-    /**
-     * \return Window which contains this frame.
-     */
-    Window* getWindow() const;
-
-    /**
-     * \return Parent frame.
-     */
-    Frame* getParent() const;
+    string getUrl();
     
     /**
      * Sets name of this frame.
@@ -84,14 +60,96 @@ namespace mike
     void setName(string name);
 
     /**
-     * \return name of this frame.
+     * \return Name of this frame.
      */
-    string getName() const;
+    string getName();
 
+    /**
+     * Sets initial size of this frame. This method does not fire any 'onresize'
+     * window events.
+     *
+     * \param width Initial width.
+     * \param height Initial height.
+     */
+    void setSize(int width, int height);
+
+    /**
+     * \return Inner width.
+     */
+    int getWidth();
+
+    /**
+     * Set new width.
+     *
+     * \param width New width.
+     */
+    void setWidth(int width);
+    
+    /**
+     * \return Inner height.
+     */
+    int getHeight();
+
+    /**
+     * Set new height.
+     *
+     * \param width New height.
+     */
+    void setHeight(int height);
+    
+    /**
+     * \return Instance of browser within which this window has been created.
+     */
+    Browser* getBrowser() const;
+    
+    /**
+     * \return History container for this frame.
+     */
+    History getHistory() const;
+
+    /**
+     * Returns the window that contains this one. If this is top level window then it
+     * will return itself.
+     *
+     * \return Parent frame/window.
+     */
+    Frame* getParent() const;
+
+    /**
+     * Returns the top level window that contains this one. If this is top level window 
+     * then it will return itself.
+     *
+     * \return Top level frame/window.
+     */
+    Frame* getTop() const;
+    
+    /**
+     * \return Wheather this frame is an window or not.
+     */
+    virtual bool isWindow() const;
+
+    /**
+     * \return Wheather this frame is closed or not.
+     */
+    bool isClosed() const;
+
+    /**
+     * \return Wheather this frame contains any page or not.
+     */
+    bool isBlank() const;
+
+    /**
+     * TODO: figure out how it works... o_O
+     */
+    virtual void close();
+    
   protected:
+    int width_;
+    int height_;
     string name_;
+    bool closed_;
     History history_;
-    Window* window_;
+    Browser* browser_;
     Frame* parent_;
   };
 }

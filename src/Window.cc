@@ -1,6 +1,5 @@
 #include "Browser.h"
 #include "Window.h"
-#include "Frame.h"
 #include "Page.h"
 #include "html/HtmlPage.h"
 
@@ -10,101 +9,26 @@ namespace mike
 
   //============================= LIFECYCLE ====================================
 
-  Window::Window(Browser* browser, int width/*=DEFAULT_WIDTH*/, int height/*=DEFAULT_HEIGHT*/)
+  Window::Window(Browser* browser)
+    : Frame(browser)
   {
-    init(width, height, this);
-    browser_ = browser;
+    init();
   }
 
-  Window::Window(Window* parent, int width/*=DEFAULT_WIDTH*/, int height/*=DEFAULT_HEIGHT*/)
+  Window::Window(Window* parent)
+    : Frame(parent->browser_)
   {
-    init(width, height, parent);
-    browser_ = parent_->getBrowser();
-  }
-
-  Window::Window(int width, int height)
-  {
-    init(width, height, this);
-  }
-  
-  Window::~Window()
-  {
-    delete frame_;
+    init();
+    parentWindow_ = parent;
   }
 
   //============================= ACCESS     ===================================
   
-  Browser* Window::getBrowser()
-  {
-    return browser_;
-  }
-
-  Window* Window::getParent()
-  {
-    return parent_;
-  }
-
   Window* Window::getParentWindow()
   {
-    return getParent();
+    return parentWindow_;
   }
 
-  Window* Window::getTopLevel()
-  {
-    Window* top = this;
-    
-    while (top != top->getParent()) {
-      top = top->getParent();
-    }
-    
-    return top;
-  }
-
-  Window* Window::getTopLevelWindow()
-  {
-    return getTopLevel();
-  }
-
-  void Window::setPage(Page* page)
-  {
-    page->enclose(frame_);
-  }
-  
-  Page* Window::getPage()
-  {
-    return frame_->getPage();
-  }
-
-  string Window::getUrl()
-  {
-    return isBlank() ? "about:blank" : getPage()->getUrl();
-  }
-
-  bool Window::isBlank()
-  {
-    return frame_ == NULL || getPage() == NULL;
-  }
-
-  void Window::setWidth(int w)
-  {
-    resizeX(w);
-  }
-
-  int Window::getWidth()
-  {
-    return width_;
-  }
-
-  void Window::setHeight(int h)
-  {
-    resizeY(h);
-  }
-
-  int Window::getHeight()
-  {
-    return height_;
-  }
-  
   //============================= OPERATIONS ===================================
   
   void Window::close()
@@ -112,30 +36,11 @@ namespace mike
     browser_->closeWindow(this);
   }
 
-  void Window::resizeX(int w)
-  {
-    resize(w, height_);
-  }
+  /////////////////////////////// PROTECTED ////////////////////////////////////
 
-  void Window::resizeY(int h)
+  void Window::init()
   {
-    resize(width_, h);
-  }
-
-  void Window::resize(int w, int h)
-  {
-    // TODO: fire onresize event here.
-    width_  = w;
-    height_ = h;
-  }
-  
-  /////////////////////////////// PROTECTED  ///////////////////////////////////
-  
-  void Window::init(int width, int height, Window* parent)
-  {
-    width_  = width;
-    height_ = height;
-    parent_ = parent;
-    frame_  = new Frame(this);
+    setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    browser_->windows_.push_back(this);
   }
 }

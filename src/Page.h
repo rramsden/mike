@@ -11,7 +11,7 @@ namespace mike
 {
   using namespace std;
   using namespace http;
-  
+
   class XmlPage;
   class HtmlPage;
 
@@ -43,6 +43,7 @@ namespace mike
    */
   class Page
   {
+    friend class Frame;
     friend class Window;
     friend class HtmlPage;
     friend class XmlPage;

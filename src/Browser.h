@@ -13,6 +13,8 @@ namespace mike
 
   class Page;
   class HtmlPage;
+  class Window;
+  class Frame;
 
   enum PopupType {
     kPopupAlert = 1,
@@ -104,6 +106,8 @@ namespace mike
   {
     friend class glue::WindowWrap;
     friend class HtmlPage;
+    friend class Frame;
+    friend class Window;
     
   public:
     /**
