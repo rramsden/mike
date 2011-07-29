@@ -72,6 +72,7 @@ namespace mike
   {
     type_ = kHtmlPage;
     javaScriptHandler_ = NULL;
+    framesCounter_ = 0;
   }
 
   HtmlPage::~HtmlPage()
@@ -377,7 +378,7 @@ namespace mike
       
       vector<HtmlElement*> frames = getElementsByXpath("//iframe | //frameset//frame");
       Browser* browser = frame_->getBrowser();
-      int i = 0;
+      framesCounter_ = 0;
       
       for (vector<HtmlElement*>::iterator it = frames.begin(); it != frames.end(); it++) {
 	HtmlElement* elem = *it;
@@ -394,7 +395,7 @@ namespace mike
 	      frame->setName(elem->getAttribute("name"));
 	    }
 
-	    frame->setIndex(i++);
+	    frame->setIndex(framesCounter_++);
 	    frame->setPage(page);
 	  } catch (ConnectionError err) {
 	    // TODO: debug info...

@@ -234,6 +234,7 @@ namespace mike
     htmlDocPtr doc_;
     JavaScriptHandler* javaScriptHandler_;
     vector<Frame*> frames_;
+    int framesCounter_;
     
     // override
     virtual void enclose(Frame* frame);
