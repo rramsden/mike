@@ -18,12 +18,15 @@
 #define JS_THROW(t,s) v8::ThrowException(v8::Exception::t(JS_Str(s)))
 #define JS_ERROR(s) JS_THROW(v8::Exception::Error,s)
 
+#define JS_TO_STR(x) string(*v8::String::AsciiValue(x))
+#define JS_TO_UTF8(x) string(*v8::String::Utf8Value(x))
+
 #define JS_ARGC args.Length()
 #define JS_ARGS_COUNT(c) if (ARGC != c) { return ERROR("Insufficent arguments"); }
 #define JS_ARGS_BETWEEN(x,y) if (x <= ARGC <= y) { return ERROR("Insufficent arguments"); }
 #define JS_ARG_INT(n,i) int n = (int)(args[i]->Int32Value())
-#define JS_ARG_STR(n,i) string n = string(*v8::String::AsciiValue(args[i]))
-#define JS_ARG_UTF8(n,i) string n = string(*v8::String::Utf8Value(args[i]))
+#define JS_ARG_STR(n,i) string n = JS_TO_STR(args[i])
+#define JS_ARG_UTF8(n,i) string n = JS_TO_UTF8(args[i])
 #define JS_ARG_OBJ(n,i) v8::Local<v8::Object> n = args[i]->ToObject()
 #define JS_ARG_FUNC(n,i) v8::Handle<v8::Function> n = v8::Handle<v8::Function>::Cast(args[i])
 #define JS_ARG_ARRAY(n,i) v8::Handle<v8::Array> n = v8::Handle<v8::Array>::Cast(args[i])
@@ -33,10 +36,10 @@
   static v8::Handle<Value> JS_Get##N(v8::Local<v8::String> property, 	 \
 				     const v8::AccessorInfo& info);
 
-#define JS_SETTER_D(N) \
-  static v8::Handle<v8::Value> JS_Set##N(v8::Local<v8::String> property, \
-					 v8::Local<v8::Value> value,	 \
-					 const v8::AccessorInfo& info);
+#define JS_SETTER_D(N)						 	 \
+  static void JS_Set##N(v8::Local<v8::String> property,			 \
+			v8::Local<v8::Value> value,			 \
+			const v8::AccessorInfo& info);
 
 #define JS_FUNCTION_D(N)                                                 \
   static v8::Handle<v8::Value> JS_##N(const v8::Arguments& args);
@@ -49,9 +52,9 @@
     __VA_ARGS__;
 
 #define JS_SETTER(obj,N,...)						 \
-  v8::Handle<v8::Value> obj::JS_Set##N(v8::Local<v8::String> property,	 \
-				       v8::Local<v8::Value> value,	 \
-				       const v8::AccessorInfo& info)	 \
+  void obj::JS_Set##N(v8::Local<v8::String> property,			 \
+		      v8::Local<v8::Value> value,			 \
+		      const v8::AccessorInfo& info)			 \
   {									 \
     v8::HandleScope scope;						 \
     __VA_ARGS__;

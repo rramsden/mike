@@ -22,6 +22,8 @@ namespace mike
       JS_GETTER_D(Parent);
       JS_GETTER_D(Top);
       JS_GETTER_D(Closed);
+      JS_GETTER_D(Status);
+      JS_SETTER_D(Status);
 
       // Functions
       

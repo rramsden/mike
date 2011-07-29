@@ -12,6 +12,7 @@ namespace mike
 
   Frame::Frame(Browser* browser)
     : closed_(false)
+    , status_("")
   {
     parent_  = this;
     browser_ = browser;
@@ -19,6 +20,7 @@ namespace mike
   
   Frame::Frame(Frame* parent)
     : closed_(false)
+    , status_("")
   {
     parent_  = parent;
     browser_ = parent->browser_;
@@ -115,6 +117,16 @@ namespace mike
     return top;
   }
 
+  string Frame::getStatus()
+  {
+    return status_;
+  }
+
+  void Frame::setStatus(string value)
+  {
+    status_ = value;
+  }
+  
   bool Frame::isWindow() const
   {
     return false;

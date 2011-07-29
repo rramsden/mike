@@ -27,6 +27,7 @@ namespace mike {
       instance_t->SetAccessor(JS_STR("parent"), JS_GetParent);
       instance_t->SetAccessor(JS_STR("top"), JS_GetTop);
       instance_t->SetAccessor(JS_STR("closed"), JS_GetClosed);
+      instance_t->SetAccessor(JS_STR("status"), JS_GetStatus, JS_SetStatus);
 
       instance_t->SetInternalFieldCount(2);
 
@@ -73,6 +74,20 @@ namespace mike {
     {
       JS_I_UNWRAP_HOLDER(Frame);
       return JS_BOOL(self->isClosed());
+    }
+    JS_END
+
+    JS_GETTER(WindowWrap, Status)
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      return JS_STR(self->getStatus().c_str());
+    }
+    JS_END
+
+    JS_SETTER(WindowWrap, Status)
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      self->setStatus(JS_TO_UTF8(value->ToString()));
     }
     JS_END
 

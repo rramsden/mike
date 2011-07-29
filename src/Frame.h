@@ -138,6 +138,18 @@ namespace mike
      * \return Top level frame/window.
      */
     Frame* getTop() const;
+
+    /**
+     * \return Status text.
+     */
+    string getStatus();
+
+    /**
+     * Set new status text.
+     *
+     * \param value New status text.
+     */
+    void setStatus(string value);
     
     /**
      * \return Wheather this frame is an window or not.
@@ -165,6 +177,7 @@ namespace mike
     int height_;
     string name_;
     bool closed_;
+    string status_;
     History history_;
     Browser* browser_;
     Frame* parent_;
