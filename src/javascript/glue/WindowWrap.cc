@@ -17,6 +17,7 @@ namespace mike {
       proto_t->Set(JS_STR("alert"), JS_FUNC_TPL(JS_Alert));
       proto_t->Set(JS_STR("confirm"), JS_FUNC_TPL(JS_Confirm));
       proto_t->Set(JS_STR("prompt"), JS_FUNC_TPL(JS_Prompt));
+      proto_t->Set(JS_STR("close"), JS_FUNC_TPL(JS_Close));
 
       // Instance
       Handle<ObjectTemplate> instance_t = t->InstanceTemplate();
@@ -25,6 +26,7 @@ namespace mike {
       instance_t->SetAccessor(JS_STR("length"), JS_GetLength);
       instance_t->SetAccessor(JS_STR("parent"), JS_GetParent);
       instance_t->SetAccessor(JS_STR("top"), JS_GetTop);
+      instance_t->SetAccessor(JS_STR("closed"), JS_GetClosed);
 
       instance_t->SetInternalFieldCount(2);
 
@@ -67,8 +69,29 @@ namespace mike {
     }
     JS_END
 
+    JS_GETTER(WindowWrap, Closed) // closed
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      return JS_BOOL(self->isClosed());
+    }
+    JS_END
+
     //============================= FUNCTIONS  ===================================
 
+    JS_FUNCTION(WindowWrap, Close) // close()
+    {
+      JS_UNWRAP_HOLDER(Frame);
+      self->close();
+      
+      // We have to throw exception to stop javascript execution on this page first.
+      // Window will be closed from the javascript handler.
+      Handle<Object> err(JS_OBJ());
+      err->Set(JS_STR("close"), JS_INT(1));
+
+      JS_THROW_OBJ(err);
+    }
+    JS_END
+    
     JS_FUNCTION(WindowWrap, Alert) // alert(msg)
     {
       JS_ARG_UTF8(message, 0);

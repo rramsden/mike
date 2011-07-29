@@ -28,6 +28,8 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testParentInInternalFrame);
   CPPUNIT_TEST(testTopInTopFrame);
   CPPUNIT_TEST(testTopInInternalFrame);
+  CPPUNIT_TEST(testClose);
+  CPPUNIT_TEST(testClosed);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -167,6 +169,23 @@ protected:
   {
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/iframes.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("window[0].top == window"), "true");
+  }
+
+  void testClose()
+  {
+    int win_size = browser.getWindows().size();
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.htm")->asHtml();
+    ASSERT_EQUAL(win_size, browser.getWindows().size()-1);
+    ASSERT_EQUAL(page->evaluate("window.close();"), "");
+    ASSERT_EQUAL(win_size, browser.getWindows().size());
+  }
+
+  void testClosed()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.htm")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.closed"), "false");
+    ASSERT_EQUAL(page->evaluate("window.close();"), "");
+    ASSERT_EQUAL(page->evaluate("window.closed"), "true");
   }
 };
 

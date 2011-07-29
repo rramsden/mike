@@ -230,8 +230,12 @@ namespace mike
 
   string HtmlPage::evaluate(string script)
   {
-    // TODO: replace 0 with eval line number
-    return javaScriptHandler_->evaluate(script, "<eval>", 0);
+    try {
+      // TODO: replace 0 with eval line number
+      return javaScriptHandler_->evaluate(script, "<eval>", 0);
+    } catch (CloseWindow cw) {
+      return "";
+    }
   }
 
   void HtmlPage::click(string locator)
@@ -333,8 +337,13 @@ namespace mike
 	  content = script->getContent();
 	  line = xmlGetLineNo(script->node_);
 	}
-	
-	javaScriptHandler_->evaluate(content, filename, line);
+
+	try {
+	  javaScriptHandler_->evaluate(content, filename, line);
+	} catch (CloseWindow cw) {
+	  // TODO: run onclose callbacks!...
+	  return;
+	}
       }
     }
   }

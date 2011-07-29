@@ -29,7 +29,8 @@ namespace mike
   Browser::~Browser()
   {
     expectedPopups_.clear();
-    closeAll();
+    delete_all< list<Window*> >(&openedWindows_);
+    delete_all< list<Window*> >(&closedWindows_);
   }
 
   //============================= ACCESS     ===================================
@@ -119,13 +120,18 @@ namespace mike
   // XXX: in the future it should return read only list...
   list<Window*>& Browser::getWindows()
   {
-    return windows_;
+    return openedWindows_;
   }
 
+  list<Window*>& Browser::getClosedWindows()
+  {
+    return closedWindows_;
+  }
+  
   Window* Browser::getWindow(int n)
   {
-    if (n < windows_.size()) {
-      list<Window*>::iterator it = windows_.begin();
+    if (n < openedWindows_.size()) {
+      list<Window*>::iterator it = openedWindows_.begin();
       advance(it, n);
       return *it;
     }
@@ -246,7 +252,7 @@ namespace mike
   
   void Browser::closeAll()
   {
-    delete_all< list<Window*> >(&windows_);
+    openedWindows_.clear();
   }
 
   void Browser::closeAllWindows()
@@ -262,11 +268,10 @@ namespace mike
 
   void Browser::closeWindow(Window* window)
   {
-    windows_.remove(window);
-    delete window;
-    window = NULL;
+    openedWindows_.remove(window);
+    closedWindows_.push_back(window);
   }
-  
+
   /////////////////////////////// PROTECTED  ///////////////////////////////////
 
   void Browser::generateSessionToken()

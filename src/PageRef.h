@@ -1,11 +1,21 @@
 #ifndef _MIKE_PAGE_REF_H_
 #define _MIKE_PAGE_REF_H_
 
+#include <exception>
+
 #include "Page.h"
 #include "Window.h"
 
 namespace mike
 {
+  class EmptyPageError : public exception
+  {
+  public:
+    explicit EmptyPageError() {};
+    virtual ~EmptyPageError() throw() {};
+    virtual const char* what() const throw() { return "Can't work on empty page!"; }
+  };
+  
   /**
    * Self-updating reference to page. It should be always used to keep reference to
    * pages opened in browser. Such reference will update automatically when new page is
@@ -116,16 +126,25 @@ namespace mike
   }
 
   template <typename T> T* PageRef<T>::operator->() {
-    return empty() ? NULL : (T*)window_->getPage();
+    if (empty())
+      throw EmptyPageError();
+    else
+      return (T*)window_->getPage();
   }
 
   template <typename T> T PageRef<T>::operator*() {
     // XXX: possible segv, throw exception here?
-    return *((T*)window_->getPage());
+    if (empty())
+      throw EmptyPageError();
+    else
+      return *((T*)window_->getPage());
   }
 
   template <typename T> template<typename U> PageRef<T>::operator U*() {
-    return empty() ? NULL : (U*)window_->getPage();
+    if (empty())
+      throw EmptyPageError();
+    else
+      return (U*)window_->getPage();
   }
   
   template <typename T> bool PageRef<T>::operator==(T* other) {

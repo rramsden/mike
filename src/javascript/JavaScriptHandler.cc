@@ -79,6 +79,7 @@ namespace mike
     context_.Dispose();
   }
 
+  // TODO: this part is getting ugly... but so far it works so i don't give a shit :P
   string JavaScriptHandler::evaluate(string source, string fname, unsigned int line)
   {
     HandleScope scope;
@@ -101,12 +102,14 @@ namespace mike
 	Handle<Value> err = try_catch.Exception();
 
 	if (!err->IsString()) {
-	  Handle<Object> exp = Handle<Object>::Cast(err);
-	  page_->getEnclosingWindow()->getBrowser()->clearExpectations();
-	    
-	  if (!exp.IsEmpty()) {
-	    PopupType type = static_cast<PopupType>(exp->Get(String::New("expectation"))->Int32Value());
-	    String::Utf8Value msg(exp->Get(String::New("message"))->ToString());
+	  Handle<Object> erro = Handle<Object>::Cast(err);
+
+	  if (erro->Has(JS_STR("close"))) {
+	    throw CloseWindow();
+	  } else if (erro->Has(JS_STR("expectation"))) {
+	    page_->getEnclosingWindow()->getBrowser()->clearExpectations();
+	    PopupType type = static_cast<PopupType>(erro->Get(JS_STR("expectation"))->Int32Value());
+	    String::Utf8Value msg(erro->Get(JS_STR("message"))->ToString());
 
 	    // Throw info about unexpected popup!
 	    throw UnexpectedPopupError(type, string(*msg));

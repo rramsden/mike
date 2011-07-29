@@ -21,12 +21,14 @@ namespace mike
       JS_GETTER_D(Length);
       JS_GETTER_D(Parent);
       JS_GETTER_D(Top);
+      JS_GETTER_D(Closed);
 
       // Functions
       
       JS_FUNCTION_D(Alert);
       JS_FUNCTION_D(Confirm);
       JS_FUNCTION_D(Prompt);
+      JS_FUNCTION_D(Close);
     };
   }
 }

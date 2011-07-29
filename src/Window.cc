@@ -33,6 +33,7 @@ namespace mike
   
   void Window::close()
   {
+    closed_ = true;
     browser_->closeWindow(this);
   }
 
@@ -41,6 +42,6 @@ namespace mike
   void Window::init()
   {
     setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    browser_->windows_.push_back(this);
+    browser_->getWindows().push_back(this);
   }
 }

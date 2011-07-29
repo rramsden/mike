@@ -155,7 +155,7 @@ namespace mike
     bool isBlank() const;
 
     /**
-     * TODO: figure out how it works... o_O
+     * If frame is an top level window then closes it, otherwise no effect.
      */
     virtual void close();
     

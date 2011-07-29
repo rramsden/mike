@@ -163,6 +163,11 @@ namespace mike
     list<Window*>& getWindows();
 
     /**
+     * \return list of recently closed windows.
+     */
+    list<Window*>& getClosedWindows();
+    
+    /**
      * Returns specified window if opened, otherwise throws 'WindowNotFound' error.
      *
      * \code
@@ -353,7 +358,8 @@ namespace mike
     string customUserAgent_;
     string sessionToken_;
     bool onLine_;
-    list<Window*> windows_;
+    list<Window*> openedWindows_;
+    list<Window*> closedWindows_;
     list<PopupExpectation> expectedPopups_;
 
     /**

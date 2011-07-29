@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <exception>
 
 #include "Frame.h"
 
@@ -13,7 +14,17 @@ namespace mike
   class Browser;
   class Window;
   class Page;
-  
+
+  /**
+   * This expception coordinates proper window closing action.
+   */
+  class CloseWindow
+  {
+  public:
+    explicit CloseWindow() {};
+    virtual ~CloseWindow() throw() {};
+  };
+
   /**
    * Represents single window opened within browser instance. Window can be related with
    * browser directly or through parent window (eg. for popup simulation). Objects of this
