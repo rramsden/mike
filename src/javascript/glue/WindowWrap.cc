@@ -59,7 +59,7 @@ namespace mike {
       Frame* self = Unwrap<Window>(info.Holder());
       Frame* parent = self->getParent();
       HtmlPage* page = parent->getPage()->asHtml();
-      return page->javaScriptHandler_->context_->Global();
+      return page->getScriptContext()->Global();
     }
     JS_END
 
@@ -68,7 +68,7 @@ namespace mike {
       Frame* self = Unwrap<Window>(info.Holder());
       Frame* top = self->getTop();
       HtmlPage* page = top->getPage()->asHtml();
-      return page->javaScriptHandler_->context_->Global();
+      return page->getScriptContext()->Global();
     }
     JS_END
 
@@ -78,7 +78,7 @@ namespace mike {
     {
       JS_ARG_UTF8(message, 0);
       Frame* self = Unwrap<Window>(JS_HOLDER);
-      list<PopupExpectation>& expects = self->getBrowser()->expectedPopups_;
+      list<PopupExpectation>& expects = self->getBrowser()->getExpectations();
 
       // Check if browser was expecting this alert.
       if (!expects.empty()) {
@@ -107,7 +107,7 @@ namespace mike {
     {
       JS_ARG_UTF8(message, 0);
       Frame* self = Unwrap<Window>(JS_HOLDER);
-      list<PopupExpectation>& expects = self->getBrowser()->expectedPopups_;
+      list<PopupExpectation>& expects = self->getBrowser()->getExpectations();
 
       // Check if browser was expecting this confirmation.
       if (!expects.empty()) {
@@ -136,7 +136,7 @@ namespace mike {
     {
       JS_ARG_UTF8(message, 0);
       Frame* self = Unwrap<Window>(JS_HOLDER);
-      list<PopupExpectation>& expects = self->getBrowser()->expectedPopups_;
+      list<PopupExpectation>& expects = self->getBrowser()->getExpectations();
 
       // Check if browser was expecting this prompt.
       if (!expects.empty()) {

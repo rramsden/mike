@@ -51,7 +51,7 @@ namespace mike
     // parent window. 
     if (frame != frame->getParent()) {
       HtmlPage* parent_page = frame->getParent()->getPage()->asHtml();
-      Handle<Context> parent_cxt = parent_page->javaScriptHandler_->context_;
+      Handle<Context> parent_cxt = parent_page->getScriptContext();
 
       parent_cxt->Enter();
 
@@ -117,5 +117,10 @@ namespace mike
     }
     
     return out;
+  }
+
+  Handle<Context> JavaScriptHandler::getContext()
+  {
+    return context_;
   }
 }

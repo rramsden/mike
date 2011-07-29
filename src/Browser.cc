@@ -277,4 +277,9 @@ namespace mike
     uuid_unparse(token, parsed);
     sessionToken_ = string(parsed, UUID_TOKEN_SIZE);
   }
+
+  list<PopupExpectation>& Browser::getExpectations()
+  {
+    return expectedPopups_;
+  }
 }

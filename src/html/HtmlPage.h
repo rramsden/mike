@@ -1,6 +1,7 @@
 #ifndef _MIKE_HTML_PAGE_H_
 #define _MIKE_HTML_PAGE_H_
 
+#include <v8.h>
 #include <libxml/HTMLparser.h>
 #include <string>
 #include <vector>
@@ -8,12 +9,12 @@
 #include "Frame.h"
 #include "xml/XmlPage.h"
 #include "html/HtmlElement.h"
-#include "html/HtmlEventHandler.h"
 #include "javascript/JavaScriptHandler.h"
 
 namespace mike
 {
   using namespace std;
+  using namespace v8;
 
   class Window;
   class Browser;
@@ -231,7 +232,6 @@ namespace mike
     
   protected:
     htmlDocPtr doc_;
-    HtmlEventHandler* eventHandler_;
     JavaScriptHandler* javaScriptHandler_;
     vector<Frame*> frames_;
     
@@ -268,6 +268,16 @@ namespace mike
      * Removes all contents from within "<noscript>...</noscript>" nodes.
      */
     void removeNoScriptNodes();
+
+    /**
+     * \return V8 javascript context from current handler.
+     */
+    Handle<Context> getScriptContext();
+
+    /**
+     * \return Current javascript handler.
+     */
+    JavaScriptHandler* getScriptHandler();
   };
 }
 

@@ -35,6 +35,7 @@ namespace mike
     ~JavaScriptHandler();
 
     string evaluate(string source, string fname, unsigned int line);
+    Handle<Context> getContext();
     
   protected:
     HtmlPage* page_;

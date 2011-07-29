@@ -15,7 +15,6 @@ SOURCE_FILES = \
 	src/html/HtmlPage.cc \
 	src/html/HtmlElement.cc \
 	src/html/HtmlAnchorElement.cc \
-	src/html/HtmlEventHandler.cc \
 	src/javascript/glue/ObjectWrap.cc \
 	src/javascript/glue/WindowWrap.cc \
 	src/javascript/JavaScriptHandler.cc

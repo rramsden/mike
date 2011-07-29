@@ -71,13 +71,11 @@ namespace mike
     : XmlPage(request)
   {
     type_ = kHtmlPage;
-    eventHandler_ = new HtmlEventHandler(this);
     javaScriptHandler_ = NULL;
   }
 
   HtmlPage::~HtmlPage()
   {
-    delete eventHandler_;
     delete javaScriptHandler_;
     delete_all< vector<Frame*> >(&frames_);
   }
@@ -285,8 +283,8 @@ namespace mike
 
   void HtmlPage::checkExpectations()
   {
-    Browser* browser = getEnclosingWindow()->getBrowser();
-    list<PopupExpectation>& expects = browser->expectedPopups_;
+    Browser* browser = getEnclosingFrame()->getBrowser();
+    list<PopupExpectation>& expects = browser->getExpectations();
 
     if (!expects.empty()) {
       PopupExpectation first = expects.front();
@@ -404,5 +402,15 @@ namespace mike
 	}
       }
     }
+  }
+
+  Handle<Context> HtmlPage::getScriptContext()
+  {
+    return javaScriptHandler_->getContext();
+  }
+
+  JavaScriptHandler* HtmlPage::getScriptHandler()
+  {
+    return javaScriptHandler_;
   }
 }
