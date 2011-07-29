@@ -9,6 +9,7 @@
 #include "Frame.h"
 
 #include "javascript/glue/WindowWrap.h"
+#include "javascript/glue/NavigatorWrap.h"
 
 namespace mike
 {
@@ -44,8 +45,13 @@ namespace mike
     // Global object have to wrap frame containing current page...
     glue::ObjectWrap::Wrap<Frame>(global, frame, 0);
 
-    // ... and have to keep reference to itself to provide compatibility on js layer.
+    context_->Enter();
+    
+    // ... and we have to assign bunch of properties at runtime.
     global_proto->Set(JS_STR("self"), global);
+    global_proto->Set(JS_STR("navigator"), glue::NavigatorWrap::New());
+
+    context_->Exit();
     
     // If current page is enclosed in internal frame we have to make a tie between its
     // parent window. 

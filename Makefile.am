@@ -17,6 +17,7 @@ SOURCE_FILES = \
 	src/html/HtmlAnchorElement.cc \
 	src/javascript/glue/ObjectWrap.cc \
 	src/javascript/glue/WindowWrap.cc \
+	src/javascript/glue/NavigatorWrap.cc \
 	src/javascript/JavaScriptHandler.cc
 
 # Build this part only if unit/integration testing is enabled.
@@ -34,6 +35,7 @@ TEST_FILES = \
 	test/TestUtils.cc \
 	test/TestPector.cc \
 	test/TestJavaScriptWindow.cc \
+	test/TestJavaScriptNavigator.cc \
 	test/Main.cc
 
 # Don't install this program but run as test suite.

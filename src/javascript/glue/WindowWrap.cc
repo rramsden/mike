@@ -7,8 +7,6 @@
 namespace mike {
   namespace glue
   {
-    //============================= BUILDER    ===================================
-
     Handle<FunctionTemplate> WindowWrap::NewTemplate()
     {
       Handle<FunctionTemplate> t = JS_FUNC_TPL();
