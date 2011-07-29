@@ -270,8 +270,16 @@ namespace mike
   void HtmlPage::enclose(Frame* frame)
   {
     Page::enclose(frame);
+
+    // We have to initialize javascript handler before frames will be loaded,
+    // because they are going to inherit owner's context.
+    delete javaScriptHandler_;
+    javaScriptHandler_ = new JavaScriptHandler(this);
+    
     loadFrames();
     processScripts();
+
+    // Checking user expectations. 
     checkExpectations();
   }
 
@@ -303,11 +311,6 @@ namespace mike
   void HtmlPage::processScripts()
   {
     if (frame_ && frame_->getBrowser()->isJavaEnabled()) {
-      // We need to be sure that there is no active javascript context before scripts
-      // processing. Everything has to be run in fresh context here.
-      delete javaScriptHandler_;
-      javaScriptHandler_ = new JavaScriptHandler(this);
-
       // Removing all noscript sections.
       removeNoScriptNodes();
 
@@ -376,7 +379,8 @@ namespace mike
       
       vector<HtmlElement*> frames = getElementsByXpath("//iframe | //frameset//frame");
       Browser* browser = frame_->getBrowser();
-
+      int i = 0;
+      
       for (vector<HtmlElement*>::iterator it = frames.begin(); it != frames.end(); it++) {
 	HtmlElement* elem = *it;
 	
@@ -392,6 +396,7 @@ namespace mike
 	      frame->setName(elem->getAttribute("name"));
 	    }
 
+	    frame->setIndex(i++);
 	    frame->setPage(page);
 	  } catch (ConnectionError err) {
 	    // TODO: debug info...

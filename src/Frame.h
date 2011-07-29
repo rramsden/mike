@@ -69,6 +69,18 @@ namespace mike
     string getName();
 
     /**
+     * Sets numeric index of this frame.
+     *
+     * \param index New index of this frame
+     */
+    void setIndex(int index);
+
+    /**
+     * \return Index of this frame.
+     */
+    int getIndex();
+
+    /**
      * Sets initial size of this frame. This method does not fire any 'onresize'
      * window events.
      *
@@ -148,6 +160,7 @@ namespace mike
     virtual void close();
     
   protected:
+    int index_;
     int width_;
     int height_;
     string name_;

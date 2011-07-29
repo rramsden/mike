@@ -22,37 +22,42 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testUnexpectedPrompt);
   CPPUNIT_TEST(testCancelPrompt);
   CPPUNIT_TEST(testNotFullyMetExpectations);
+  CPPUNIT_TEST(testFramesLength);
+  CPPUNIT_TEST(testFrames);
+  CPPUNIT_TEST(testParentInTopFrame);
+  CPPUNIT_TEST(testParentInInternalFrame);
+  CPPUNIT_TEST(testTopInTopFrame);
+  CPPUNIT_TEST(testTopInInternalFrame);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
 
+  Browser browser;
+  
   void testWindowAndThisObject()
   {
-    Browser browser;
     PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/simple.html");
     ASSERT_EQUAL(page->evaluate("window == this"), "true");
     ASSERT_EQUAL(page->evaluate("window = 'cantoverwrite'; window == this;"), "true");
     ASSERT_EQUAL(page->evaluate("window == window.window"), "true");
+    ASSERT_EQUAL(page->evaluate("window == frames"), "true");
     ASSERT_EQUAL(page->evaluate("window.constructor.toString()"), "function DOMWindow() { [native code] }");
   }
 
   void testAnyExpectedAlert()
   {
-    Browser browser;
     browser.expectAlert();
     PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/alert.html");
   }
 
   void testSpecificExpectedAlert()
   {
-    Browser browser;
     browser.expectAlert("Hello Alert!");
     PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/alert.html");
   }
 
   void testUnexpectedAlerts()
   {
-    Browser browser;
     ASSERT_THROW(browser.open("http://localhost:4567/alert.html"), UnexpectedPopupError);
     browser.expectAlert("Hello Other Alert!");
     ASSERT_THROW(browser.open("http://localhost:4567/alert.html"), UnexpectedPopupError);
@@ -60,7 +65,6 @@ protected:
 
   void testAnyExpectedConfirm()
   {
-    Browser browser;
     browser.expectConfirm(true);
     PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/confirm.html");
     ASSERT_EQUAL(page->evaluate("res"), "true");
@@ -68,7 +72,6 @@ protected:
 
   void testSpecificExpectedConfirm()
   {
-    Browser browser;
     browser.expectConfirm("Are you sure?", false);
     PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/confirm.html");
     ASSERT_EQUAL(page->evaluate("res"), "false");
@@ -76,7 +79,6 @@ protected:
 
   void testUnexpectedConfirm()
   {
-    Browser browser;
     ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedPopupError);
     browser.expectConfirm("Foobar!", true);
     ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), UnexpectedPopupError);
@@ -86,7 +88,6 @@ protected:
 
   void testAnyExpectedPrompt()
   {
-    Browser browser;
     browser.expectPrompt("foobar");
     PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/prompt.html");
     ASSERT_EQUAL(page->evaluate("res"), "foobar");
@@ -94,7 +95,6 @@ protected:
 
   void testSpecificExpectedPrompt()
   {
-    Browser browser;
     browser.expectPrompt("What's your name?", "Chris");
     PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/prompt.html");
     ASSERT_EQUAL(page->evaluate("res"), "Chris");
@@ -102,7 +102,6 @@ protected:
 
   void testUnexpectedPrompt()
   {
-    Browser browser;
     ASSERT_THROW(browser.open("http://localhost:4567/prompt.html"), UnexpectedPopupError);
     browser.expectPrompt("Foobar!", "Bla!");
     ASSERT_THROW(browser.open("http://localhost:4567/prompt.html"), UnexpectedPopupError);
@@ -112,7 +111,6 @@ protected:
 
   void testCancelPrompt()
   {
-    Browser browser;
     browser.expectPrompt("What's your name?", kCancelPrompt);
     PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/prompt.html");
     ASSERT_EQUAL(page->evaluate("res"), "null");
@@ -120,11 +118,54 @@ protected:
   
   void testNotFullyMetExpectations()
   {
-    Browser browser;
     browser.expectConfirm("Foobar!");
     browser.expectAlert("Foobar!");
     ASSERT_THROW(browser.open("http://localhost:4567/confirm.html"), ExpectationNotMetError);
-  }  
+  }
+
+  void testFramesLength()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.length"), "0");
+    page = browser.open("http://localhost:4567/iframes.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.length"), "2");
+  }
+
+  void testFrames()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window[0]"), "undefined");
+    page = browser.open("http://localhost:4567/iframes.html")->asHtml();
+    ASSERT_NOT_EQUAL(page->evaluate("window[0]"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window[1]"), "undefined");
+    ASSERT_EQUAL(page->evaluate("window['foo'] == window[1]"), "true");
+    ASSERT_EQUAL(page->evaluate("window[0].window == window[0]"), "true");
+    ASSERT_EQUAL(page->evaluate("frames == window"), "true");
+  }
+
+  void testParentInTopFrame()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.parent == window"), "true");
+  }
+
+  void testParentInInternalFrame()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/iframes.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window[0].parent == window"), "true");
+  }
+
+  void testTopInTopFrame()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.top == window"), "true");
+  }
+
+  void testTopInInternalFrame()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/iframes.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window[0].top == window"), "true");
+  }
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MikeJavaScriptWindowTest);

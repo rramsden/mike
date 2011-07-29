@@ -52,6 +52,16 @@ namespace mike
     return name_;
   }
 
+  void Frame::setIndex(int index)
+  {
+    index_ = index;
+  }
+
+  int Frame::getIndex()
+  {
+    return index_;
+  }
+
   void Frame::setSize(int width, int height)
   {
     width_  = width;

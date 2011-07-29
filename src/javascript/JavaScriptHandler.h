@@ -13,12 +13,16 @@ namespace mike
   class HtmlPage;
   class HtmlElement;
 
-  class JavaScriptObjectWrap
+  namespace glue
   {
-  };
+    class WindowWrap;
+  }
 
   class JavaScriptHandler
   {
+    friend class HtmlPage;
+    friend class glue::WindowWrap;
+    
   public:
     template <typename T> static inline void WrapPtr(Handle<Object> handle,T* ptr)
     {

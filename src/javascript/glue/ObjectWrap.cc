@@ -1,13 +1,12 @@
 #include "javascript/glue/ObjectWrap.h"
-#include "Window.h"
+#include "Frame.h"
 
 namespace mike {
   namespace glue
   {
-    Window* ObjectWrap::GetWindow()
+    Frame* ObjectWrap::GetWindow()
     {
-      Handle<Object> global_proto = Handle<Object>::Cast(JS_GLOBAL->GetPrototype());
-      return Unwrap<Window>(global_proto);
+      return Unwrap<Frame>(JS_GLOBAL);
     }
 
     Handle<Value> ObjectWrap::Unwrap(Handle<Object> handle, int field/*=0*/)

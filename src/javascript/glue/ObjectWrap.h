@@ -10,6 +10,7 @@
 namespace mike
 {
   class Window;
+  class Frame;
   
   namespace glue
   {
@@ -22,7 +23,7 @@ namespace mike
       /**
        * \return Enclosing window object unwrapped form current global object.  
        */
-      static Window* GetWindow();
+      static Frame* GetWindow();
       
       /**
        * Unwraps external object of specified type from given handle's internal field.

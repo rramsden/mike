@@ -18,6 +18,11 @@ namespace mike
   class Window;
   class Browser;
 
+  namespace glue
+  {
+    class WindowWrap;
+  }
+  
   /**
    * Available locator types.
    */
@@ -58,6 +63,8 @@ namespace mike
   class HtmlPage : public XmlPage
   {
     friend class Window;
+    friend class JavaScriptHandler;
+    friend class glue::WindowWrap;
     
   public:
     explicit HtmlPage(Request* request);

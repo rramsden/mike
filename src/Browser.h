@@ -55,12 +55,14 @@ namespace mike
     explicit ExpectationError(PopupType type, string msg) : type_(type), msg_(msg) {}
     virtual ~ExpectationError() throw() {};
     virtual const char* what() const throw() =0;
-    virtual const string type() const
+    const string type() const
     {
       switch (type_) {
       case kPopupAlert:   return "alert";
       case kPopupConfirm: return "confirm";
       case kPopupPrompt:  return "prompt";
+      default:
+	return "unknown popup";
       }
     }
   protected:
@@ -87,7 +89,7 @@ namespace mike
   public:
     explicit ExpectationNotMetError(PopupType type, string msg) : ExpectationError(type, msg) {}
     virtual ~ExpectationNotMetError() throw() {};
-    virtual const char* what() const throw() { return ("Expectation " + type() + " not met: " + string(msg_)).c_str(); }
+    virtual const char* what() const throw() { return ("Expectated " + type() + " not met: " + string(msg_)).c_str(); }
   };
 
   /**

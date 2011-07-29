@@ -1,6 +1,8 @@
 #include "javascript/glue/WindowWrap.h"
 #include "Browser.h"
 #include "Window.h"
+#include "Frame.h"
+#include "html/HtmlPage.h"
 
 namespace mike {
   namespace glue
@@ -20,20 +22,53 @@ namespace mike {
 
       // Instance
       Handle<ObjectTemplate> instance_t = t->InstanceTemplate();
-      instance_t->SetInternalFieldCount(1);
       instance_t->SetAccessor(JS_STR("window"), JS_GetWindow);
+      instance_t->SetAccessor(JS_STR("frames"), JS_GetWindow); // frames refers to window
+      instance_t->SetAccessor(JS_STR("length"), JS_GetLength);
+      instance_t->SetAccessor(JS_STR("parent"), JS_GetParent);
+      instance_t->SetAccessor(JS_STR("top"), JS_GetTop);
+
+      instance_t->SetInternalFieldCount(2);
 
       return t;
     }
 
     //============================= PROPERTIES ===================================
     
-    JS_GETTER(WindowWrap, Window) // window
+    JS_GETTER(WindowWrap, Window) // window, frame
     {
-      // window == this, so we can't return `info.Holder()` or `info.This()`, since
-      // they are just prototypes of the global obj. Global object have to be returned
-      // directly here.
-      return JS_GLOBAL;
+      return info.Holder()->Get(JS_STR("self"));
+    }
+    JS_END
+
+    JS_GETTER(WindowWrap, Length) // length
+    {
+      Frame* self = Unwrap<Window>(info.Holder());
+      HtmlPage* page = static_cast<HtmlPage*>(self->getPage());
+
+      if (!self->isBlank()) {
+	return JS_INT(page->getFrames().size());
+      } else {
+	return JS_INT(0);
+      }
+    }
+    JS_END
+
+    JS_GETTER(WindowWrap, Parent) // parent
+    {
+      Frame* self = Unwrap<Window>(info.Holder());
+      Frame* parent = self->getParent();
+      HtmlPage* page = parent->getPage()->asHtml();
+      return page->javaScriptHandler_->context_->Global();
+    }
+    JS_END
+
+    JS_GETTER(WindowWrap, Top) // top
+    {
+      Frame* self = Unwrap<Window>(info.Holder());
+      Frame* top = self->getTop();
+      HtmlPage* page = top->getPage()->asHtml();
+      return page->javaScriptHandler_->context_->Global();
     }
     JS_END
 
@@ -42,7 +77,8 @@ namespace mike {
     JS_FUNCTION(WindowWrap, Alert) // alert(msg)
     {
       JS_ARG_UTF8(message, 0);
-      list<PopupExpectation>& expects = GetWindow()->getBrowser()->expectedPopups_;
+      Frame* self = Unwrap<Window>(JS_HOLDER);
+      list<PopupExpectation>& expects = self->getBrowser()->expectedPopups_;
 
       // Check if browser was expecting this alert.
       if (!expects.empty()) {
@@ -70,7 +106,8 @@ namespace mike {
     JS_FUNCTION(WindowWrap, Confirm) // confirm(msg)
     {
       JS_ARG_UTF8(message, 0);
-      list<PopupExpectation>& expects = GetWindow()->getBrowser()->expectedPopups_;
+      Frame* self = Unwrap<Window>(JS_HOLDER);
+      list<PopupExpectation>& expects = self->getBrowser()->expectedPopups_;
 
       // Check if browser was expecting this confirmation.
       if (!expects.empty()) {
@@ -98,7 +135,8 @@ namespace mike {
     JS_FUNCTION(WindowWrap, Prompt) // prompt(msg)
     {
       JS_ARG_UTF8(message, 0);
-      list<PopupExpectation>& expects = GetWindow()->getBrowser()->expectedPopups_;
+      Frame* self = Unwrap<Window>(JS_HOLDER);
+      list<PopupExpectation>& expects = self->getBrowser()->expectedPopups_;
 
       // Check if browser was expecting this prompt.
       if (!expects.empty()) {

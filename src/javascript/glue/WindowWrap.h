@@ -18,6 +18,9 @@ namespace mike
       // Properties
 
       JS_GETTER_D(Window);
+      JS_GETTER_D(Length);
+      JS_GETTER_D(Parent);
+      JS_GETTER_D(Top);
 
       // Functions
       
