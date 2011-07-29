@@ -12,7 +12,7 @@ Before you start working with mike you have to install following dependencies (r
 
 Runtime dependencies:
 
-    $ apt-get autotools scons libpcre libcurl libpthread
+    $ apt-get install autotools scons libpcre libcurl libpthread
 
 Development dependencies:
     
@@ -33,7 +33,7 @@ Clone repo and update submodules:
 ## Installing V8
 
 Some distros (i.a. Arch Linux) provides `libv8` in repository. If your operating system doesn't
-provide then you need to install one on your own, or used vendored version provided by mike in
+provide it then you need to install one on your own, or used vendored version provided by mike in
 `deps/vi` directory. 
 
     $ cd deps/v8
