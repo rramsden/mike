@@ -4,11 +4,6 @@
 namespace mike {
   namespace glue
   {
-    Frame* ObjectWrap::GetWindow()
-    {
-      return Unwrap<Frame>(JS_GLOBAL);
-    }
-
     Handle<Value> ObjectWrap::Unwrap(Handle<Object> handle, int field/*=0*/)
     {
       assert(!handle.IsEmpty());

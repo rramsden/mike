@@ -21,11 +21,6 @@ namespace mike
     {
     public:
       /**
-       * \return Enclosing window object unwrapped form current global object.  
-       */
-      static Frame* GetWindow();
-      
-      /**
        * Unwraps external object of specified type from given handle's internal field.
        *
        * \param handle Handle to unwrap.

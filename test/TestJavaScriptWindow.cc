@@ -36,7 +36,7 @@ protected:
   
   void testWindowAndThisObject()
   {
-    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/simple.html");
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("window == this"), "true");
     ASSERT_EQUAL(page->evaluate("window = 'cantoverwrite'; window == this;"), "true");
     ASSERT_EQUAL(page->evaluate("window == window.window"), "true");
@@ -47,13 +47,13 @@ protected:
   void testAnyExpectedAlert()
   {
     browser.expectAlert();
-    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/alert.html");
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/alert.html")->asHtml();
   }
 
   void testSpecificExpectedAlert()
   {
     browser.expectAlert("Hello Alert!");
-    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/alert.html");
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/alert.html")->asHtml();
   }
 
   void testUnexpectedAlerts()
@@ -66,14 +66,14 @@ protected:
   void testAnyExpectedConfirm()
   {
     browser.expectConfirm(true);
-    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/confirm.html");
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/confirm.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("res"), "true");
   }
 
   void testSpecificExpectedConfirm()
   {
     browser.expectConfirm("Are you sure?", false);
-    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/confirm.html");
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/confirm.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("res"), "false");
   }
 
@@ -89,14 +89,14 @@ protected:
   void testAnyExpectedPrompt()
   {
     browser.expectPrompt("foobar");
-    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/prompt.html");
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/prompt.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("res"), "foobar");
   }
 
   void testSpecificExpectedPrompt()
   {
     browser.expectPrompt("What's your name?", "Chris");
-    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/prompt.html");
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/prompt.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("res"), "Chris");
   }
 
@@ -112,7 +112,7 @@ protected:
   void testCancelPrompt()
   {
     browser.expectPrompt("What's your name?", kCancelPrompt);
-    PageRef<HtmlPage> page = (HtmlPage*)browser.open("http://localhost:4567/prompt.html");
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/prompt.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("res"), "null");
   }
   

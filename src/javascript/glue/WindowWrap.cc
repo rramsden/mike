@@ -37,17 +37,16 @@ namespace mike {
     
     JS_GETTER(WindowWrap, Window) // window, frame
     {
-      return info.Holder()->Get(JS_STR("self"));
+      return JS_I_HOLDER->Get(JS_STR("self"));
     }
     JS_END
 
     JS_GETTER(WindowWrap, Length) // length
     {
-      Frame* self = Unwrap<Window>(info.Holder());
-      HtmlPage* page = static_cast<HtmlPage*>(self->getPage());
+      JS_I_UNWRAP_HOLDER(Frame);
 
       if (!self->isBlank()) {
-	return JS_INT(page->getFrames().size());
+	return JS_INT(self->getPage()->asHtml()->getFrames().size());
       } else {
 	return JS_INT(0);
       }
@@ -56,18 +55,16 @@ namespace mike {
 
     JS_GETTER(WindowWrap, Parent) // parent
     {
-      Frame* self = Unwrap<Window>(info.Holder());
-      Frame* parent = self->getParent();
-      HtmlPage* page = parent->getPage()->asHtml();
+      JS_I_UNWRAP_HOLDER(Frame);
+      HtmlPage* page = self->getParent()->getPage()->asHtml();
       return page->getScriptContext()->Global();
     }
     JS_END
 
     JS_GETTER(WindowWrap, Top) // top
     {
-      Frame* self = Unwrap<Window>(info.Holder());
-      Frame* top = self->getTop();
-      HtmlPage* page = top->getPage()->asHtml();
+      JS_I_UNWRAP_HOLDER(Frame);
+      HtmlPage* page = self->getTop()->getPage()->asHtml();
       return page->getScriptContext()->Global();
     }
     JS_END
@@ -77,7 +74,8 @@ namespace mike {
     JS_FUNCTION(WindowWrap, Alert) // alert(msg)
     {
       JS_ARG_UTF8(message, 0);
-      Frame* self = Unwrap<Window>(JS_HOLDER);
+      JS_UNWRAP_HOLDER(Frame);
+
       list<PopupExpectation>& expects = self->getBrowser()->getExpectations();
 
       // Check if browser was expecting this alert.
@@ -106,7 +104,8 @@ namespace mike {
     JS_FUNCTION(WindowWrap, Confirm) // confirm(msg)
     {
       JS_ARG_UTF8(message, 0);
-      Frame* self = Unwrap<Window>(JS_HOLDER);
+      JS_UNWRAP_HOLDER(Frame);
+
       list<PopupExpectation>& expects = self->getBrowser()->getExpectations();
 
       // Check if browser was expecting this confirmation.
@@ -135,7 +134,8 @@ namespace mike {
     JS_FUNCTION(WindowWrap, Prompt) // prompt(msg)
     {
       JS_ARG_UTF8(message, 0);
-      Frame* self = Unwrap<Window>(JS_HOLDER);
+      JS_UNWRAP_HOLDER(Frame);
+
       list<PopupExpectation>& expects = self->getBrowser()->getExpectations();
 
       // Check if browser was expecting this prompt.
