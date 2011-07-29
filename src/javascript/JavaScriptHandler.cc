@@ -19,41 +19,50 @@ namespace mike
 
     Frame* frame = page_->getEnclosingFrame();
 
+    // We have to use proxy context to create proper global (window) object and
+    // use it in target context. 
     Persistent<Context> proxy = Context::New();
     proxy->Enter();
     
     Handle<FunctionTemplate> window_tpl = glue::WindowWrap::NewTemplate();
     Handle<Object> window = window_tpl->GetFunction()->NewInstance();
 
-    // Setting up new context with window object as a global.
+    // Setting up target context with window template as a global...
     context_ = Context::New(NULL, window_tpl->InstanceTemplate());
+
+    // ... and now we have to reattach global object with window instance created
+    // in proxy context.
     context_->ReattachGlobal(window);
-    
+
+    // Don't need proxy context anymore.
     proxy->Exit();
     proxy.Dispose();
 
     Handle<Object> global = context_->Global();
     Handle<Object> global_proto = Handle<Object>::Cast(global->GetPrototype());
     
-    // Wrap enclosing window within global object.
+    // Global object have to wrap frame containing current page...
     glue::ObjectWrap::Wrap<Frame>(global, frame, 0);
+
+    // ... and have to keep reference to itself to provide compatibility on js layer.
     global_proto->Set(JS_STR("self"), global);
     
-    // If there is any context already entered, we can assume that we're setting up
-    // context for frame here. That's mean we have to create accessors for this frame
-    // within parent window.
+    // If current page is enclosed in internal frame we have to make a tie between its
+    // parent window. 
     if (frame != frame->getParent()) {
       HtmlPage* parent_page = frame->getParent()->getPage()->asHtml();
       Handle<Context> parent_cxt = parent_page->javaScriptHandler_->context_;
 
       parent_cxt->Enter();
-      
-      Handle<Object> parent_window = parent_cxt->Global();
+
+      // Contexts have to share the same security token.
       parent_cxt->SetSecurityToken(context_->GetSecurityToken());
-      parent_window->Set(frame->getIndex(), window);
+
+      Handle<Object> parent_window = parent_cxt->Global();
+      parent_window->Set(frame->getIndex(), global);
 
       if (!frame->getName().empty())
-	parent_window->Set(JS_STR(frame->getName().c_str()), window);
+	parent_window->Set(JS_STR(frame->getName().c_str()), global);
 
       parent_cxt->Exit();
     }

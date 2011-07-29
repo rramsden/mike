@@ -155,6 +155,8 @@ protected:
     ASSERT_EQUAL(page->evaluate("window[0].parent == window"), "true");
   }
 
+  // TODO: add tests for parent and top in deeper frames.
+
   void testTopInTopFrame()
   {
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
