@@ -28,6 +28,8 @@ namespace mike {
       instance_t->SetAccessor(JS_STR("top"), JS_GetTop);
       instance_t->SetAccessor(JS_STR("closed"), JS_GetClosed);
       instance_t->SetAccessor(JS_STR("status"), JS_GetStatus, JS_SetStatus);
+      instance_t->Set(JS_STR("defaultStatus"), JS_STR(""));
+      instance_t->Set(JS_STR("defaultstatus"), JS_STR(""));
 
       instance_t->SetInternalFieldCount(2);
 

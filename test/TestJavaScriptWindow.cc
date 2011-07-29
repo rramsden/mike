@@ -31,6 +31,7 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testClose);
   CPPUNIT_TEST(testClosed);
   CPPUNIT_TEST(testStatus);
+  CPPUNIT_TEST(testDefaultStatus);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -196,6 +197,13 @@ protected:
     page->evaluate("window.status = 'hello';");
     ASSERT_EQUAL(page->evaluate("window.status"), "hello");
     ASSERT_EQUAL(page->getEnclosingFrame()->getStatus(), "hello");
+  }
+
+  void testDefaultStatus()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.defaultstatus"), "");
+    ASSERT_EQUAL(page->evaluate("window.defaultStatus"), "");
   }
 };
 
