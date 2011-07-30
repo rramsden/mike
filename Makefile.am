@@ -69,5 +69,5 @@ dummy-start: tmp-dir
 dummy-restart: dummy-stop dummy-start
 
 test: test-suite dummy-restart
-	@sleep 2
+	@sleep 5
 	./test-suite
