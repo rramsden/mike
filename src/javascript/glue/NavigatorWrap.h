@@ -18,6 +18,8 @@ namespace mike
       // Properties
       JS_GETTER_D(AppCodeName);
       JS_GETTER_D(CookieEnabled);
+      JS_GETTER_D(Language);
+      JS_GETTER_D(OnLine);
       
       // Functions
       

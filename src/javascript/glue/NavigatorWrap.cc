@@ -19,6 +19,8 @@ namespace mike {
       Handle<ObjectTemplate> instance_t = t->InstanceTemplate();
       instance_t->SetAccessor(JS_STR("appCodeName"), JS_GetAppCodeName);
       instance_t->SetAccessor(JS_STR("cookieEnabled"), JS_GetCookieEnabled);
+      instance_t->SetAccessor(JS_STR("language"), JS_GetLanguage);
+      instance_t->SetAccessor(JS_STR("onLine"), JS_GetOnLine);
 
       return t;
     }
@@ -29,7 +31,7 @@ namespace mike {
     }
 
     //============================= PROPERTIES ===================================
-    
+
     JS_GETTER(NavigatorWrap, AppCodeName) // appCodeName
     {
       return JS_STR("Mozilla");
@@ -43,6 +45,20 @@ namespace mike {
     }
     JS_END
 
+    JS_GETTER(NavigatorWrap, Language) // language
+    {
+      JS_UNWRAP_WINDOW;
+      return JS_STR(window->getBrowser()->getLanguage().c_str());
+    }
+    JS_END
+
+
+    JS_GETTER(NavigatorWrap, OnLine) // language
+    {
+      JS_UNWRAP_WINDOW;
+      return JS_BOOL(window->getBrowser()->isOnLine());
+    }
+    JS_END
     //============================= FUNCTIONS  ===================================
 
     // ...
