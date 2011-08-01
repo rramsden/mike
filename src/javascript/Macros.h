@@ -43,6 +43,10 @@
 			v8::Local<v8::Value> value,			 \
 			const v8::AccessorInfo& info);
 
+#define JS_ACCESSOR_D(N) 			                         \
+  JS_GETTER_D(N);							 \
+  JS_SETTER_D(N);
+
 #define JS_FUNCTION_D(N)                                                 \
   static v8::Handle<v8::Value> JS_##N(const v8::Arguments& args);
 

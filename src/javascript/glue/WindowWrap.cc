@@ -40,7 +40,7 @@ namespace mike {
       instance_t->SetAccessor(JS_STR("opener"), JS_GetOpener);
       instance_t->SetAccessor(JS_STR("closed"), JS_GetClosed);
       instance_t->SetAccessor(JS_STR("status"), JS_GetStatus, JS_SetStatus);
-      instance_t->SetAccessor(JS_STR("name"), JS_GetName);
+      instance_t->SetAccessor(JS_STR("name"), JS_GetName, JS_SetName);
       instance_t->SetAccessor(JS_STR("innerWidth"), JS_GetInnerWidth);
       instance_t->SetAccessor(JS_STR("innerHeight"), JS_GetInnerHeight);
       instance_t->SetAccessor(JS_STR("outerWidth"), JS_GetOuterWidth);
@@ -208,6 +208,13 @@ namespace mike {
     {
       JS_I_UNWRAP_HOLDER(Frame);
       return JS_STR(self->getName().c_str());
+    }
+    JS_END
+
+    JS_SETTER(WindowWrap, Name) // name
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      self->setName(JS_TO_STR(value));
     }
     JS_END
 
