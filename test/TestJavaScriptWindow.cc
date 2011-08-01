@@ -48,6 +48,7 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testBlur);
   CPPUNIT_TEST(testMoveTo);
   CPPUNIT_TEST(testMoveBy);
+  CPPUNIT_TEST(testPrimitives);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -324,6 +325,32 @@ protected:
   {
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("window.moveBy(1,2)"), "undefined");
+  }
+
+  void testPrimitives()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.Array == [].constructor"), "true");
+    ASSERT_EQUAL(page->evaluate("window.Boolean == true.constructor"), "true");
+    ASSERT_EQUAL(page->evaluate("window.Function == (function() {}).constructor"), "true");
+    ASSERT_EQUAL(page->evaluate("window.Number == (1).constructor"), "true");
+    ASSERT_EQUAL(page->evaluate("window.Object == ({}).constructor"), "true");
+    ASSERT_EQUAL(page->evaluate("window.RegExp == (/./).constructor"), "true");
+    ASSERT_EQUAL(page->evaluate("window.String == ''.constructor"), "true");
+    ASSERT_NOT_EQUAL(page->evaluate("window.Date"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.Error"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.Infinity"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.Math"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.decodeURI"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.decodeURIComponent"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.encodeURI"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.encodeURIComponent"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.escape"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.unescape"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.isFinite"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.isNaN"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.parseFloat"), "undefined");
+    ASSERT_NOT_EQUAL(page->evaluate("window.parseInt"), "undefined");
   }
 };
 
