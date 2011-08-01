@@ -24,6 +24,7 @@ namespace mike
   Frame::Frame(Frame* parent)
   {
     init();
+    // TODO: setup frame proportions!
     parent_ = parent;
     browser_ = parent->browser_;
   }

@@ -39,6 +39,10 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testOpener);
   CPPUNIT_TEST(testName);
   CPPUNIT_TEST(testUndefined);
+  CPPUNIT_TEST(testInnerWidth);
+  CPPUNIT_TEST(testInnerHeight);
+  CPPUNIT_TEST(testOuterWidth);
+  CPPUNIT_TEST(testOuterHeight);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -257,6 +261,34 @@ protected:
   {
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("window.undefined"), "undefined");
+  }
+
+  void testInnerWidth()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.innerWidth"), "1280");
+    // TODO: add iframes example
+  }
+
+  void testInnerHeight()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.innerHeight"), "1024");
+    // TODO: add iframes example
+  }
+
+  void testOuterWidth()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.outerWidth"), "1280");
+    // TODO: add iframes example
+  }
+
+  void testOuterHeight()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.outerHeight"), "1024");
+    // TODO: add iframes example
   }
 };
 

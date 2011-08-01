@@ -26,6 +26,10 @@ namespace mike
       JS_GETTER_D(Status);
       JS_SETTER_D(Status);
       JS_GETTER_D(Name);
+      JS_GETTER_D(InnerWidth);
+      JS_GETTER_D(InnerHeight);
+      JS_GETTER_D(OuterWidth);
+      JS_GETTER_D(OuterHeight);
       JS_GETTER_D(EventCallback);
       JS_SETTER_D(EventCallback);
 

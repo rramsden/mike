@@ -32,6 +32,10 @@ namespace mike {
       instance_t->SetAccessor(JS_STR("closed"), JS_GetClosed);
       instance_t->SetAccessor(JS_STR("status"), JS_GetStatus, JS_SetStatus);
       instance_t->SetAccessor(JS_STR("name"), JS_GetName);
+      instance_t->SetAccessor(JS_STR("innerWidth"), JS_GetInnerWidth);
+      instance_t->SetAccessor(JS_STR("innerHeight"), JS_GetInnerHeight);
+      instance_t->SetAccessor(JS_STR("outerWidth"), JS_GetOuterWidth);
+      instance_t->SetAccessor(JS_STR("outerHeight"), JS_GetOuterHeight);
       // ... window events (TODO: figure out which one are webkit-only!)
       instance_t->SetAccessor(JS_STR("onabort"), JS_GetEventCallback, JS_SetEventCallback);
       instance_t->SetAccessor(JS_STR("onbeforeunload"), JS_GetEventCallback, JS_SetEventCallback);
@@ -180,6 +184,34 @@ namespace mike {
     }
     JS_END
 
+    JS_GETTER(WindowWrap, InnerWidth) // innerWidth
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      return JS_INT(self->getWidth());
+    }
+    JS_END
+    
+    JS_GETTER(WindowWrap, InnerHeight) // innerHeight
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      return JS_INT(self->getHeight());
+    }
+    JS_END
+    
+    JS_GETTER(WindowWrap, OuterWidth) // outerWidth
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      return JS_INT(self->getTop()->getWidth());
+    }
+    JS_END
+    
+    JS_GETTER(WindowWrap, OuterHeight) // outerHeight
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      return JS_INT(self->getTop()->getHeight());
+    }
+    JS_END
+    
     JS_GETTER(WindowWrap, EventCallback) // on*
     {
       JS_I_UNWRAP_HOLDER(Frame);
