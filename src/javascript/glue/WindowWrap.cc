@@ -100,6 +100,7 @@ namespace mike {
       // ... attributes
       instance_t->Set(JS_STR("defaultStatus"), JS_STR(""));
       instance_t->Set(JS_STR("defaultstatus"), JS_STR(""));
+      instance_t->Set(JS_STR("undefined"), JS_UNDEF);
 
       instance_t->SetInternalFieldCount(2);
 

@@ -38,6 +38,7 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testBarInfo);
   CPPUNIT_TEST(testOpener);
   CPPUNIT_TEST(testName);
+  CPPUNIT_TEST(testUndefined);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -250,6 +251,12 @@ protected:
   {
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/iframes.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("window.foo.name"), "foo");
+  }
+
+  void testUndefined()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.undefined"), "undefined");
   }
 };
 
