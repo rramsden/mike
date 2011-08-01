@@ -61,9 +61,6 @@ namespace mike
     Window* getParentWindow();
     
   private:
-    /**
-     * Shared initializer.
-     */
     void init();
 
   protected:

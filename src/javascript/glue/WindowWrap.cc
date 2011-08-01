@@ -28,8 +28,10 @@ namespace mike {
       instance_t->SetAccessor(JS_STR("length"), JS_GetLength);
       instance_t->SetAccessor(JS_STR("parent"), JS_GetParent);
       instance_t->SetAccessor(JS_STR("top"), JS_GetTop);
+      instance_t->SetAccessor(JS_STR("opener"), JS_GetOpener);
       instance_t->SetAccessor(JS_STR("closed"), JS_GetClosed);
       instance_t->SetAccessor(JS_STR("status"), JS_GetStatus, JS_SetStatus);
+      instance_t->SetAccessor(JS_STR("name"), JS_GetName);
       // ... window events (TODO: figure out which one are webkit-only!)
       instance_t->SetAccessor(JS_STR("onabort"), JS_GetEventCallback, JS_SetEventCallback);
       instance_t->SetAccessor(JS_STR("onbeforeunload"), JS_GetEventCallback, JS_SetEventCallback);
@@ -138,6 +140,17 @@ namespace mike {
     }
     JS_END
 
+    JS_GETTER(WindowWrap, Opener) // opener
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      
+      if (self->hasOpener())
+	return self->getOpener()->getScriptContext()->Global();
+      else
+	return JS_NULL;
+    }
+    JS_END
+
     JS_GETTER(WindowWrap, Closed) // closed
     {
       JS_I_UNWRAP_HOLDER(Frame);
@@ -152,10 +165,17 @@ namespace mike {
     }
     JS_END
 
-    JS_SETTER(WindowWrap, Status)
+    JS_SETTER(WindowWrap, Status) // status
     {
       JS_I_UNWRAP_HOLDER(Frame);
       self->setStatus(JS_TO_UTF8(value->ToString()));
+    }
+    JS_END
+
+    JS_GETTER(WindowWrap, Name) // name
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      return JS_STR(self->getName().c_str());
     }
     JS_END
 

@@ -362,14 +362,7 @@ namespace mike
     list<Window*> closedWindows_;
     list<PopupExpectation> expectedPopups_;
 
-    /**
-     * Generates UUID token for current browser instance.
-     */
     void generateSessionToken();
-
-    /**
-     * \return List of expected popups 
-     */
     list<PopupExpectation>& getExpectations();
   };
 }

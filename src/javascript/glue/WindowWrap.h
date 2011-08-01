@@ -21,9 +21,11 @@ namespace mike
       JS_GETTER_D(Length);
       JS_GETTER_D(Parent);
       JS_GETTER_D(Top);
+      JS_GETTER_D(Opener);
       JS_GETTER_D(Closed);
       JS_GETTER_D(Status);
       JS_SETTER_D(Status);
+      JS_GETTER_D(Name);
       JS_GETTER_D(EventCallback);
       JS_SETTER_D(EventCallback);
 

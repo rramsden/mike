@@ -15,19 +15,23 @@ namespace mike
   //============================= LIFECYCLE ====================================
 
   Frame::Frame(Browser* browser)
-    : closed_(false)
-    , status_("")
   {
-    parent_  = this;
+    init();
+    parent_ = this;
     browser_ = browser;
   }
   
   Frame::Frame(Frame* parent)
-    : closed_(false)
-    , status_("")
   {
-    parent_  = parent;
+    init();
+    parent_ = parent;
     browser_ = parent->browser_;
+  }
+
+  Frame::~Frame()
+  {
+    for (list<Frame*>::iterator it = opened_.begin(); it != opened_.end(); it++)
+      (*it)->removeOpener();
   }
 
   //============================= ACCESS     ===================================
@@ -121,6 +125,11 @@ namespace mike
     return top;
   }
 
+  Frame* Frame::getOpener()
+  {
+    return isTop() ? opener_ : getTop()->getOpener();
+  }
+
   string Frame::getStatus()
   {
     return status_;
@@ -141,6 +150,21 @@ namespace mike
     return closed_;
   }
 
+  bool Frame::isTop() const
+  {
+    return (this == getTop());
+  }
+
+  bool Frame::hasParent() const
+  {
+    return (this != getParent());
+  }
+
+  bool Frame::hasOpener()
+  {
+    return (opener_ != NULL);
+  }
+
   bool Frame::isBlank() const
   {
     return false; //(getPage() == NULL);
@@ -155,6 +179,20 @@ namespace mike
 
   /////////////////////////////// PROTECTED ////////////////////////////////////
 
+  void Frame::setOpener(Frame* opener)
+  {
+    opener_ = opener;
+    opener_->opened_.push_back(this);
+  }
+
+  void Frame::removeOpener()
+  {
+    if (opener_) {
+      opener_->opened_.remove(this);
+      opener_ = NULL;
+    }
+  }
+  
   Handle<Context> Frame::getScriptContext()
   {
     assert(!isBlank());
@@ -167,5 +205,15 @@ namespace mike
     assert(!isBlank());
     assert(getPage()->isHtml());
     return getPage()->asHtml()->getScriptHandler();
+  }
+
+  /////////////////////////////// PRIVATE //////////////////////////////////////
+
+  void Frame::init()
+  {
+    name_   = "";
+    status_ = "";
+    closed_ = false;
+    opener_ = NULL;
   }
 }

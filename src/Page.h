@@ -169,12 +169,6 @@ namespace mike
     Frame* frame_;
     void* ref_;
     
-    /**
-     * Opens the page in given frame. For the security reasons each instance can
-     * be enclosed only once.
-     *
-     * \param frame Frame in which this page should be opened.
-     */
     virtual void enclose(Frame* frame);
   };
 }

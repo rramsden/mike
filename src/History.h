@@ -80,11 +80,7 @@ namespace mike
     list<Page*> forward_;
     Page* current_;
 
-    /**
-     * Reloads current page if it's possible.
-     */
     void reloadCurrent();
-
   };
 }
 

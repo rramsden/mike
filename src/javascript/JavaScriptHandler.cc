@@ -55,7 +55,7 @@ namespace mike
     global_proto->Set(JS_STR("toolbar"), glue::BarInfo::New());
     global_proto->Set(JS_STR("locationbar"), glue::BarInfo::New());
     global_proto->Set(JS_STR("personalbar"), glue::BarInfo::New());
-    global_proto->Set(JS_STR("scrollbar"), glue::BarInfo::New());
+    global_proto->Set(JS_STR("scrollbars"), glue::BarInfo::New());
     global_proto->Set(JS_STR("statusbar"), glue::BarInfo::New());
 
     context_->Exit();

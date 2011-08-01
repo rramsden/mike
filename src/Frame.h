@@ -4,6 +4,7 @@
 #include <v8.h>
 #include <vector>
 #include <string>
+#include <list>
 
 #include "History.h"
 
@@ -44,6 +45,11 @@ namespace mike
      * \param frame Parent frame.
      */
     explicit Frame(Frame* parent);
+
+    /**
+     * Destructor.
+     */
+    virtual ~Frame();
     
     /**
      * Assigns page to this frame.
@@ -150,6 +156,16 @@ namespace mike
     Frame* getTop() const;
 
     /**
+     * \return Wheather this frame has opener or not.
+     */
+    bool hasOpener();
+
+    /**
+     * \return Opener window.
+     */
+    Frame* getOpener();
+
+    /**
      * \return Status text.
      */
     string getStatus();
@@ -177,9 +193,22 @@ namespace mike
     bool isBlank() const;
 
     /**
+     * \return Wheather this frame is top level or not. 
+     */
+    bool isTop() const;
+
+    /**
+     * \return Wheather this frame has parent.
+     */ 
+    bool hasParent() const;
+
+    /**
      * If frame is an top level window then closes it, otherwise no effect.
      */
     virtual void close();
+
+  private:
+    void init();
     
   protected:
     int index_;
@@ -191,6 +220,11 @@ namespace mike
     History history_;
     Browser* browser_;
     Frame* parent_;
+    Frame* opener_;
+    list<Frame*> opened_;
+
+    void setOpener(Frame* opener);
+    void removeOpener();
 
     Handle<Context> getScriptContext();
     JavaScriptHandler* getScriptHandler();

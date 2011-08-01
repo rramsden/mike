@@ -36,6 +36,8 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testPrint);
   CPPUNIT_TEST(testFind);
   CPPUNIT_TEST(testBarInfo);
+  CPPUNIT_TEST(testOpener);
+  CPPUNIT_TEST(testName);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -235,8 +237,19 @@ protected:
     ASSERT_EQUAL(page->evaluate("window.toolbar.visible"), "false");
     ASSERT_EQUAL(page->evaluate("window.locationbar.visible"), "false");
     ASSERT_EQUAL(page->evaluate("window.personalbar.visible"), "false");
-    ASSERT_EQUAL(page->evaluate("window.scrollbar.visible"), "false");
+    ASSERT_EQUAL(page->evaluate("window.scrollbars.visible"), "false");
     ASSERT_EQUAL(page->evaluate("window.statusbar.visible"), "false");
+  }
+
+  void testOpener()
+  {
+    // TODO: test it when window.open will be implemented
+  }
+
+  void testName()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/iframes.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.foo.name"), "foo");
   }
 };
 
