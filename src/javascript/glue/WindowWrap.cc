@@ -19,6 +19,7 @@ namespace mike {
       proto_t->Set(JS_STR("prompt"), JS_FUNC_TPL(JS_Prompt));
       proto_t->Set(JS_STR("close"), JS_FUNC_TPL(JS_Close));
       proto_t->Set(JS_STR("print"), JS_FUNC_TPL(JS_Print));
+      proto_t->Set(JS_STR("find"), JS_FUNC_TPL(JS_Find));
 
       // Instance
       Handle<ObjectTemplate> instance_t = t->InstanceTemplate();
@@ -144,7 +145,7 @@ namespace mike {
     }
     JS_END
 
-    JS_GETTER(WindowWrap, Status)
+    JS_GETTER(WindowWrap, Status) // status
     {
       JS_I_UNWRAP_HOLDER(Frame);
       return JS_STR(self->getStatus().c_str());
@@ -158,14 +159,14 @@ namespace mike {
     }
     JS_END
 
-    JS_GETTER(WindowWrap, EventCallback)
+    JS_GETTER(WindowWrap, EventCallback) // on*
     {
       JS_I_UNWRAP_HOLDER(Frame);
       return self->getScriptHandler()->getEventCallback(JS_TO_STR(property));
     }
     JS_END
     
-    JS_SETTER(WindowWrap, EventCallback)
+    JS_SETTER(WindowWrap, EventCallback) // on*
     {
       JS_I_UNWRAP_HOLDER(Frame);
       self->getScriptHandler()->setEventCallback(JS_TO_STR(property), value);
@@ -188,10 +189,15 @@ namespace mike {
     }
     JS_END
 
-    JS_FUNCTION(WindowWrap, Print)
+    JS_FUNCTION(WindowWrap, Print) // print()
     {
-      JS_NOT_SUPPORTED("window.print");
       return JS_UNDEF;
+    }
+    JS_END
+
+    JS_FUNCTION(WindowWrap, Find) // find()
+    {
+      return JS_FALSE;
     }
     JS_END
     
