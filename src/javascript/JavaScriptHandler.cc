@@ -26,14 +26,14 @@ namespace mike
     proxy->Enter();
     
     Handle<FunctionTemplate> window_tpl = glue::WindowWrap::NewTemplate();
-    Handle<Object> window = window_tpl->GetFunction()->NewInstance();
+    Persistent<Object> window_ = Persistent<Object>::New(window_tpl->GetFunction()->NewInstance());
 
     // Setting up target context with window template as a global...
     context_ = Context::New(NULL, window_tpl->InstanceTemplate());
 
     // ... and now we have to reattach global object with window instance created
     // in proxy context.
-    context_->ReattachGlobal(window);
+    context_->ReattachGlobal(window_);
 
     // Don't need proxy context anymore.
     proxy->Exit();
@@ -76,15 +76,17 @@ namespace mike
 
   JavaScriptHandler::~JavaScriptHandler()
   {
+    window_.Dispose();
     context_.Dispose();
   }
 
   // TODO: this part is getting ugly... but so far it works so i don't give a shit :P
   string JavaScriptHandler::evaluate(string source, string fname, unsigned int line)
   {
+    //Locker lock;
     HandleScope scope;
     Context::Scope context_scope(context_);
-    
+
     string out = "";
       
     Local<String> s = String::New(source.c_str());
@@ -99,6 +101,7 @@ namespace mike
       Handle<Value> result = script->Run();
 
       if (try_catch.HasCaught()) {
+	Unlocker unlock;
 	Handle<Value> err = try_catch.Exception();
 
 	if (!err->IsString()) {
@@ -124,7 +127,7 @@ namespace mike
 	  out = string(*str);
       }
     }
-    
+
     return out;
   }
 

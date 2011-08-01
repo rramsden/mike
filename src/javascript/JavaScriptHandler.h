@@ -40,6 +40,7 @@ namespace mike
   protected:
     HtmlPage* page_;
     Persistent<Context> context_;
+    Persistent<Object> window_;
   };
 }
 
