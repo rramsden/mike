@@ -1,4 +1,7 @@
 #include "javascript/glue/WindowWrap.h"
+#include "javascript/glue/BarInfo.h"
+#include "javascript/glue/NavigatorWrap.h"
+
 #include "Browser.h"
 #include "Window.h"
 #include "Frame.h"
@@ -39,6 +42,7 @@ namespace mike {
       instance_t->SetAccessor(JS_STR("innerHeight"), JS_GetInnerHeight);
       instance_t->SetAccessor(JS_STR("outerWidth"), JS_GetOuterWidth);
       instance_t->SetAccessor(JS_STR("outerHeight"), JS_GetOuterHeight);
+      
       // ... window events (TODO: figure out which one are webkit-only!)
       instance_t->SetAccessor(JS_STR("onabort"), JS_GetEventCallback, JS_SetEventCallback);
       instance_t->SetAccessor(JS_STR("onbeforeunload"), JS_GetEventCallback, JS_SetEventCallback);
@@ -104,6 +108,7 @@ namespace mike {
       instance_t->SetAccessor(JS_STR("onunload"), JS_GetEventCallback, JS_SetEventCallback);
       instance_t->SetAccessor(JS_STR("onvolumechange"), JS_GetEventCallback, JS_SetEventCallback);
       instance_t->SetAccessor(JS_STR("onwaiting"), JS_GetEventCallback, JS_SetEventCallback);
+      
       // ... attributes
       instance_t->Set(JS_STR("defaultStatus"), JS_STR(""));
       instance_t->Set(JS_STR("defaultstatus"), JS_STR(""));
@@ -112,6 +117,22 @@ namespace mike {
       instance_t->SetInternalFieldCount(2);
 
       return t;
+    }
+
+    void WindowWrap::Fulfill(Handle<Object> window)
+    {
+      Handle<Object> proto = Handle<Object>::Cast(window->GetPrototype());
+      Handle<Object> navigator = glue::NavigatorWrap::New();
+
+      proto->Set(JS_STR("self"), window);
+      proto->Set(JS_STR("navigator"), navigator);
+      proto->Set(JS_STR("clientInformation"), navigator);
+      proto->Set(JS_STR("menubar"), glue::BarInfo::New());
+      proto->Set(JS_STR("toolbar"), glue::BarInfo::New());
+      proto->Set(JS_STR("locationbar"), glue::BarInfo::New());
+      proto->Set(JS_STR("personalbar"), glue::BarInfo::New());
+      proto->Set(JS_STR("scrollbars"), glue::BarInfo::New());
+      proto->Set(JS_STR("statusbar"), glue::BarInfo::New());
     }
 
     //============================= PROPERTIES ===================================

@@ -14,7 +14,8 @@ namespace mike
     {
     public:
       static Handle<FunctionTemplate> NewTemplate();
-
+      static void Fulfill(Handle<Object> window);
+      
       // Properties
 
       JS_GETTER_D(Window);

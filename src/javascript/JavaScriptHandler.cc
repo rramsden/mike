@@ -9,8 +9,6 @@
 #include "Frame.h"
 
 #include "javascript/glue/WindowWrap.h"
-#include "javascript/glue/NavigatorWrap.h"
-#include "javascript/glue/BarInfo.h"
 
 namespace mike
 {
@@ -40,24 +38,15 @@ namespace mike
     proxy->Exit();
     proxy.Dispose();
 
-    Handle<Object> global = context_->Global();
-    Handle<Object> global_proto = Handle<Object>::Cast(global->GetPrototype());
+    Handle<Object> global = context_->Global();    
+    context_->Enter();
     
     // Global object have to wrap frame containing current page...
     glue::ObjectWrap::Wrap<Frame>(global, frame, 0);
 
-    context_->Enter();
-    
     // ... and we have to assign bunch of properties at runtime.
-    global_proto->Set(JS_STR("self"), global);
-    global_proto->Set(JS_STR("navigator"), glue::NavigatorWrap::New());
-    global_proto->Set(JS_STR("menubar"), glue::BarInfo::New());
-    global_proto->Set(JS_STR("toolbar"), glue::BarInfo::New());
-    global_proto->Set(JS_STR("locationbar"), glue::BarInfo::New());
-    global_proto->Set(JS_STR("personalbar"), glue::BarInfo::New());
-    global_proto->Set(JS_STR("scrollbars"), glue::BarInfo::New());
-    global_proto->Set(JS_STR("statusbar"), glue::BarInfo::New());
-
+    glue::WindowWrap::Fulfill(global);
+    
     context_->Exit();
     
     // If current page is enclosed in internal frame we have to make a tie between its

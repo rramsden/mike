@@ -13,7 +13,7 @@ class MikeJavaScriptNavigatorTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testWindowNavigator);
   CPPUNIT_TEST(testAppCodeName);
   CPPUNIT_TEST(testDefaultLanguage);
-  CPPUNIT_TEST(testDefaultOnline);
+  CPPUNIT_TEST(testOnline);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -25,6 +25,7 @@ protected:
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("navigator"), "[object Navigator]");
     ASSERT_EQUAL(page->evaluate("navigator == window.navigator"), "true");
+    ASSERT_EQUAL(page->evaluate("window.navigator == window.clientInformation"), "true");
   }
 
   void testAppCodeName()
@@ -39,7 +40,7 @@ protected:
     ASSERT_EQUAL(page->evaluate("navigator.language"), "en");
   }
 
-  void testDefaultOnline()
+  void testOnline()
   {
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("navigator.onLine"), "true");
