@@ -4,6 +4,8 @@
 #define JS_CONTEXT v8::Context::GetCurrent()
 #define JS_GLOBAL JS_CONTEXT->Global()
 #define JS_UNDEF v8::Undefined()
+#define JS_FALSE v8::False()
+#define JS_TRUE v8::True();
 #define JS_NULL v8::Null()
 #define JS_STR(s) v8::String::New(s)
 #define JS_STR2(s,c) v8::String::New(s,c)

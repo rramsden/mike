@@ -34,6 +34,8 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testDefaultStatus);
   CPPUNIT_TEST(testEval);
   CPPUNIT_TEST(testPrint);
+  CPPUNIT_TEST(testFind);
+  CPPUNIT_TEST(testBarInfo);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -218,6 +220,23 @@ protected:
   {
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("window.print()"), "undefined");
+  }
+
+  void testFind()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.find()"), "false");
+  }
+
+  void testBarInfo()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.menubar.visible"), "false");
+    ASSERT_EQUAL(page->evaluate("window.toolbar.visible"), "false");
+    ASSERT_EQUAL(page->evaluate("window.locationbar.visible"), "false");
+    ASSERT_EQUAL(page->evaluate("window.personalbar.visible"), "false");
+    ASSERT_EQUAL(page->evaluate("window.scrollbar.visible"), "false");
+    ASSERT_EQUAL(page->evaluate("window.statusbar.visible"), "false");
   }
 };
 

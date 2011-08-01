@@ -10,6 +10,7 @@
 
 #include "javascript/glue/WindowWrap.h"
 #include "javascript/glue/NavigatorWrap.h"
+#include "javascript/glue/BarInfo.h"
 
 namespace mike
 {
@@ -50,6 +51,12 @@ namespace mike
     // ... and we have to assign bunch of properties at runtime.
     global_proto->Set(JS_STR("self"), global);
     global_proto->Set(JS_STR("navigator"), glue::NavigatorWrap::New());
+    global_proto->Set(JS_STR("menubar"), glue::BarInfo::New());
+    global_proto->Set(JS_STR("toolbar"), glue::BarInfo::New());
+    global_proto->Set(JS_STR("locationbar"), glue::BarInfo::New());
+    global_proto->Set(JS_STR("personalbar"), glue::BarInfo::New());
+    global_proto->Set(JS_STR("scrollbar"), glue::BarInfo::New());
+    global_proto->Set(JS_STR("statusbar"), glue::BarInfo::New());
 
     context_->Exit();
     

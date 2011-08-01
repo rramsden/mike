@@ -18,6 +18,7 @@ SOURCE_FILES = \
 	src/javascript/glue/ObjectWrap.cc \
 	src/javascript/glue/WindowWrap.cc \
 	src/javascript/glue/NavigatorWrap.cc \
+	src/javascript/glue/BarInfo.cc \
 	src/javascript/JavaScriptHandler.cc
 
 # Build this part only if unit/integration testing is enabled.
