@@ -27,6 +27,8 @@ namespace mike {
       proto_t->Set(JS_STR("atob"), JS_FUNC_TPL(JS_AToB));
       proto_t->Set(JS_STR("btoa"), JS_FUNC_TPL(JS_BToA));
       proto_t->Set(JS_STR("blur"), JS_FUNC_TPL(JS_Blur));
+      proto_t->Set(JS_STR("moveBy"), JS_FUNC_TPL(JS_MoveBy));
+      proto_t->Set(JS_STR("moveTo"), JS_FUNC_TPL(JS_MoveTo));
 
       // Instance
       Handle<ObjectTemplate> instance_t = t->InstanceTemplate();
@@ -299,7 +301,21 @@ namespace mike {
       return JS_UNDEF;
     }
     JS_END
-    
+
+    JS_FUNCTION(WindowWrap, MoveTo) // moveTo(x,y)
+    {
+      JS_NOT_SUPPORTED("window.moveTo()");
+      return JS_UNDEF;
+    }
+    JS_END
+
+    JS_FUNCTION(WindowWrap, MoveBy) // moveBy(x,y)
+    {
+      JS_NOT_SUPPORTED("window.moveBy()");
+      return JS_UNDEF;
+    }
+    JS_END
+
     JS_FUNCTION(WindowWrap, Alert) // alert(msg)
     {
       JS_ARG_UTF8(message, 0);

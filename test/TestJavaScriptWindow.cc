@@ -45,6 +45,9 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testOuterHeight);
   CPPUNIT_TEST(testBToA);
   CPPUNIT_TEST(testAToB);
+  CPPUNIT_TEST(testBlur);
+  CPPUNIT_TEST(testMoveTo);
+  CPPUNIT_TEST(testMoveBy);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -303,6 +306,24 @@ protected:
   {
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("window.atob('Zm9vYmFy')"), "foobar");
+  }
+
+  void testBlur()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.blur()"), "undefined");
+  }
+
+  void testMoveTo()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.moveTo(1,2)"), "undefined");
+  }
+
+  void testMoveBy()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.moveBy(1,2)"), "undefined");
   }
 };
 

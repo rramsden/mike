@@ -42,6 +42,8 @@ namespace mike
       JS_FUNCTION_D(AToB);
       JS_FUNCTION_D(BToA);
       JS_FUNCTION_D(Blur);
+      JS_FUNCTION_D(MoveTo);
+      JS_FUNCTION_D(MoveBy);
       JS_FUNCTION_D(Alert);
       JS_FUNCTION_D(Confirm);
       JS_FUNCTION_D(Prompt);
