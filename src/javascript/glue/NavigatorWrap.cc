@@ -52,13 +52,13 @@ namespace mike {
     }
     JS_END
 
-
-    JS_GETTER(NavigatorWrap, OnLine) // language
+    JS_GETTER(NavigatorWrap, OnLine) // onLine
     {
       JS_UNWRAP_WINDOW;
       return JS_BOOL(window->getBrowser()->isOnLine());
     }
     JS_END
+
     //============================= FUNCTIONS  ===================================
 
     // ...
