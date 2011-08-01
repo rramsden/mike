@@ -34,7 +34,7 @@ Clone repo and update submodules:
 
 Some distros (i.a. Arch Linux) provides `libv8` in repository. If your operating system doesn't
 provide it then you need to install one on your own, or used vendored version provided by mike in
-`deps/vi` directory. 
+`deps/v8` directory. 
 
     $ cd deps/v8
     $ scons library=static mode=release snapshot=off arch=XXX # arch can be either ia32 or x64
