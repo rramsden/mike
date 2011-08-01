@@ -26,6 +26,7 @@ namespace mike {
       proto_t->Set(JS_STR("find"), JS_FUNC_TPL(JS_Find));
       proto_t->Set(JS_STR("atob"), JS_FUNC_TPL(JS_AToB));
       proto_t->Set(JS_STR("btoa"), JS_FUNC_TPL(JS_BToA));
+      proto_t->Set(JS_STR("blur"), JS_FUNC_TPL(JS_Blur));
 
       // Instance
       Handle<ObjectTemplate> instance_t = t->InstanceTemplate();
@@ -289,6 +290,13 @@ namespace mike {
     {
       JS_ARG_UTF8(str, 0);
       return JS_STR(base64_encode(str.c_str(), str.size()).c_str());
+    }
+    JS_END
+
+    JS_FUNCTION(WindowWrap, Blur) // blur()
+    {
+      JS_NOT_SUPPORTED("window.blur()");
+      return JS_UNDEF;
     }
     JS_END
     
