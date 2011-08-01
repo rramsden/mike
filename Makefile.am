@@ -7,6 +7,7 @@ SOURCE_FILES = \
 	src/Window.cc \
 	src/Frame.cc \
 	src/utils/Helpers.cc \
+	src/utils/Base64.cc \
 	src/http/Response.cc \
 	src/http/Request.cc \
 	src/http/Headers.cc \

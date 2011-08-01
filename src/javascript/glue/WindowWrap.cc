@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "Frame.h"
 #include "html/HtmlPage.h"
+#include "utils/Base64.h"
 
 namespace mike {
   namespace glue
@@ -20,6 +21,8 @@ namespace mike {
       proto_t->Set(JS_STR("close"), JS_FUNC_TPL(JS_Close));
       proto_t->Set(JS_STR("print"), JS_FUNC_TPL(JS_Print));
       proto_t->Set(JS_STR("find"), JS_FUNC_TPL(JS_Find));
+      proto_t->Set(JS_STR("atob"), JS_FUNC_TPL(JS_AToB));
+      proto_t->Set(JS_STR("btoa"), JS_FUNC_TPL(JS_BToA));
 
       // Instance
       Handle<ObjectTemplate> instance_t = t->InstanceTemplate();
@@ -251,6 +254,20 @@ namespace mike {
     JS_FUNCTION(WindowWrap, Find) // find()
     {
       return JS_FALSE;
+    }
+    JS_END
+
+    JS_FUNCTION(WindowWrap, AToB) // atob(str)
+    {
+      JS_ARG_UTF8(str, 0);
+      return JS_STR(base64_decode(str.c_str()).c_str());
+    }
+    JS_END
+
+    JS_FUNCTION(WindowWrap, BToA) // btoa(str)
+    {
+      JS_ARG_UTF8(str, 0);
+      return JS_STR(base64_encode(str.c_str(), str.size()).c_str());
     }
     JS_END
     

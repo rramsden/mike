@@ -43,6 +43,8 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testInnerHeight);
   CPPUNIT_TEST(testOuterWidth);
   CPPUNIT_TEST(testOuterHeight);
+  CPPUNIT_TEST(testBToA);
+  CPPUNIT_TEST(testAToB);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -289,6 +291,18 @@ protected:
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("window.outerHeight"), "1024");
     // TODO: add iframes example
+  }
+
+  void testBToA()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.btoa('foobar')"), "Zm9vYmFy");
+  }
+
+  void testAToB()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.atob('Zm9vYmFy')"), "foobar");
   }
 };
 
