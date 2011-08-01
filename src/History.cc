@@ -25,7 +25,7 @@ namespace mike
 
   int History::size()
   {
-    return back_.size() + forward_.size();
+    return back_.size() + forward_.size() + (current_ == NULL ? 0 : 1);
   }
 
   Page* History::getCurrent()

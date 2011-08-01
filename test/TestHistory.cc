@@ -23,11 +23,12 @@ protected:
     Page* page1 = Page::Open("http://localhost:4567/simple.xml");
     Page* page2 = Page::Open("http://localhost:4567/simple.html");
     History* history = new History();
-    history->push(page1);
     ASSERT_EQUAL(history->size(), 0);
+    history->push(page1);
+    ASSERT_EQUAL(history->size(), 1);
     ASSERT_EQUAL(history->getCurrent(), page1);
     history->push(page2);
-    ASSERT_EQUAL(history->size(), 1);
+    ASSERT_EQUAL(history->size(), 2);
     ASSERT_EQUAL(history->getCurrent(), page2);
     delete history;
   }
@@ -42,11 +43,11 @@ protected:
       history->push(pages[i]);
     }
 
-    ASSERT_EQUAL(history->size(), 3);
+    ASSERT_EQUAL(history->size(), 4);
     ASSERT_EQUAL(history->getCurrent(), pages[3]);
     
     history->goBack();
-    ASSERT_EQUAL(history->size(), 3);
+    ASSERT_EQUAL(history->size(), 4);
     ASSERT_EQUAL(history->getCurrent(), pages[2]);
 
     for (int i = 0; i < 10; i++) {

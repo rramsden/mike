@@ -66,12 +66,20 @@ namespace mike
        */
       static void Wrap(Handle<Object> handle, Handle<Value> value, int field=0);
 
+    protected:
+      
       /**
        * Displays info about not supported features.
        *
        * /param what Description of feature.
        */
       static void NotSupported(string what);
+
+      /**
+       * Stops javascript execution on current page.
+       */
+      static void StopExecution();
+      
     };
   }
 }

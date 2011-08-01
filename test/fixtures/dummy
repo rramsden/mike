@@ -168,3 +168,21 @@ end
 get "/prompt.html" do
   "<html><body><script>var res = prompt(\"What's your name?\");</script></body></html>"
 end
+
+get "/stopped.html" do
+  "<html><body><script>var a = 1; stop(); a = 2;</script></body></html>"
+end
+
+get "/history.html" do
+  "<html><body><a href='/history/next1.html'>Next</a></body></html>"
+end
+
+get "/history/next1.html" do
+  "<html><body><a href='/history/next2.html'>Next</a></body></html>"
+end
+
+get "/history/next2.html" do
+  "<html><body><a href='/history.html'>Next</a></body></html>"
+end
+
+

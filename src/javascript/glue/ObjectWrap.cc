@@ -22,5 +22,12 @@ namespace mike {
     {
       //printf("JS: %s is not supported\n", what.c_str());
     }
+
+    void ObjectWrap::StopExecution()
+    {
+      Handle<Object> err(JS_OBJ());
+      err->Set(JS_STR("stop"), JS_INT(1));
+      JS_THROW_OBJ(err);
+    }
   }
 }

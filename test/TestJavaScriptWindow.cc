@@ -49,6 +49,7 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testMoveTo);
   CPPUNIT_TEST(testMoveBy);
   CPPUNIT_TEST(testPrimitives);
+  CPPUNIT_TEST(testStop);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -351,6 +352,13 @@ protected:
     ASSERT_NOT_EQUAL(page->evaluate("window.isNaN"), "undefined");
     ASSERT_NOT_EQUAL(page->evaluate("window.parseFloat"), "undefined");
     ASSERT_NOT_EQUAL(page->evaluate("window.parseInt"), "undefined");
+  }
+
+  void testStop()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/stopped.html")->asHtml();
+    ASSERT(page->isStopped());
+    ASSERT_EQUAL(page->evaluate("a"), "1");
   }
 };
 

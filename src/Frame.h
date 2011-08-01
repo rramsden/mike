@@ -137,7 +137,7 @@ namespace mike
     /**
      * \return History container for this frame.
      */
-    History getHistory() const;
+    History& getHistory();
 
     /**
      * Returns the window that contains this one. If this is top level window then it

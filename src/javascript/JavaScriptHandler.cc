@@ -80,11 +80,12 @@ namespace mike
   // TODO: this part is getting ugly... but so far it works so i don't give a shit :P
   string JavaScriptHandler::evaluate(string source, string fname, unsigned int line)
   {
+    string out = "";
+    
     //Locker lock;
     HandleScope scope;
     Context::Scope context_scope(context_);
 
-    string out = "";
       
     Local<String> s = String::New(source.c_str());
     Local<String> n = String::New(fname.c_str());
@@ -98,7 +99,7 @@ namespace mike
       Handle<Value> result = script->Run();
 
       if (try_catch.HasCaught()) {
-	Unlocker unlock;
+	//Unlocker unlock;
 	Handle<Value> err = try_catch.Exception();
 
 	if (!err->IsString()) {
@@ -106,6 +107,8 @@ namespace mike
 
 	  if (erro->Has(JS_STR("close"))) {
 	    throw CloseWindow();
+	  } else if (erro->Has(JS_STR("stop"))) {
+	    page_->stop();
 	  } else if (erro->Has(JS_STR("expectation"))) {
 	    page_->getEnclosingWindow()->getBrowser()->clearExpectations();
 	    PopupType type = static_cast<PopupType>(erro->Get(JS_STR("expectation"))->Int32Value());

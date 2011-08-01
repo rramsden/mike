@@ -79,6 +79,7 @@ namespace mike
     HtmlElement* getElementByPath(string path);
 
     virtual void reload();
+    virtual void stop();
 
     /**
      * Returns set of elements matching given CSS rule.

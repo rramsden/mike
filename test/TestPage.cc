@@ -19,6 +19,9 @@ class MikePageTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testGetStream);
   CPPUNIT_TEST(testGetEnclosingFrame);
   CPPUNIT_TEST(testGetEnclosingWindow);
+  CPPUNIT_TEST(testStopped);
+  CPPUNIT_TEST(testIsHtml);
+  CPPUNIT_TEST(testIsXml);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -67,9 +70,38 @@ protected:
 
   void testGetEnclosingWindow()
   {
-    Browser browser = Browser();
+    Browser browser;
     Page* page = browser.open("http://localhost:4567/simple.txt");
     ASSERT_EQUAL(page->getEnclosingWindow(), browser.getWindow(0));
+  }
+  
+  void testStopped()
+  {
+    Browser browser;
+    Page* page = browser.open("http://localhost:4567/simple.html");
+    ASSERT_NOT(page->isStopped());
+    page->stop();
+    ASSERT(page->isStopped());
+  }
+
+  void testIsXml()
+  {
+    Browser browser;
+    Page* page = browser.open("http://localhost:4567/simple.html");
+    ASSERT(page->isXml());
+    page = browser.open("http://localhost:4567/simple.xml");
+    ASSERT(page->isXml());
+    page = browser.open("http://localhost:4567/simple.txt");
+    ASSERT_NOT(page->isXml());
+  }
+
+  void testIsHtml()
+  {
+    Browser browser;
+    Page* page = browser.open("http://localhost:4567/simple.html");
+    ASSERT(page->isHtml());
+    page = browser.open("http://localhost:4567/simple.txt");
+    ASSERT_NOT(page->isHtml());
   }
 
 };

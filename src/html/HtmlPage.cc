@@ -228,6 +228,11 @@ namespace mike
       enclose(frame_);
   }
 
+  void HtmlPage::stop()
+  {
+    Page::stop();
+  }
+  
   string HtmlPage::evaluate(string script)
   {
     try {
@@ -321,6 +326,9 @@ namespace mike
       vector<HtmlElement*> scripts = getElementsByXpath("//script[@type='text/javascript' or not(@type)]");
 
       for (vector<HtmlElement*>::iterator it = scripts.begin(); it != scripts.end(); it++) {
+	if (isStopped())
+	  return;
+	
 	HtmlElement* script = *it;
 	string content, filename;
 	unsigned int line = 0;

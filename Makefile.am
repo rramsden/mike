@@ -19,6 +19,7 @@ SOURCE_FILES = \
 	src/javascript/glue/ObjectWrap.cc \
 	src/javascript/glue/WindowWrap.cc \
 	src/javascript/glue/NavigatorWrap.cc \
+	src/javascript/glue/HistoryWrap.cc \
 	src/javascript/glue/BarInfo.cc \
 	src/javascript/JavaScriptHandler.cc
 
@@ -38,6 +39,7 @@ TEST_FILES = \
 	test/TestPector.cc \
 	test/TestJavaScriptWindow.cc \
 	test/TestJavaScriptNavigator.cc \
+	test/TestJavaScriptHistory.cc \
 	test/Main.cc
 
 # Don't install this program but run as test suite.

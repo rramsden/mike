@@ -1,6 +1,7 @@
 #include "javascript/glue/WindowWrap.h"
 #include "javascript/glue/BarInfo.h"
 #include "javascript/glue/NavigatorWrap.h"
+#include "javascript/glue/HistoryWrap.h"
 
 #include "Browser.h"
 #include "Window.h"
@@ -29,6 +30,7 @@ namespace mike {
       proto_t->Set(JS_STR("blur"), JS_FUNC_TPL(JS_Blur));
       proto_t->Set(JS_STR("moveBy"), JS_FUNC_TPL(JS_MoveBy));
       proto_t->Set(JS_STR("moveTo"), JS_FUNC_TPL(JS_MoveTo));
+      proto_t->Set(JS_STR("stop"), JS_FUNC_TPL(JS_Stop));
 
       // Instance
       Handle<ObjectTemplate> instance_t = t->InstanceTemplate();
@@ -125,11 +127,15 @@ namespace mike {
     void WindowWrap::Fulfill(Handle<Object> window)
     {
       Handle<Object> proto = Handle<Object>::Cast(window->GetPrototype());
-      Handle<Object> navigator = glue::NavigatorWrap::New();
-
       proto->Set(JS_STR("self"), window);
+
+      Handle<Object> history = glue::HistoryWrap::New();
+      proto->Set(JS_STR("history"), history);
+
+      Handle<Object> navigator = glue::NavigatorWrap::New();
       proto->Set(JS_STR("navigator"), navigator);
       proto->Set(JS_STR("clientInformation"), navigator);
+      
       proto->Set(JS_STR("menubar"), glue::BarInfo::New());
       proto->Set(JS_STR("toolbar"), glue::BarInfo::New());
       proto->Set(JS_STR("locationbar"), glue::BarInfo::New());
@@ -319,6 +325,13 @@ namespace mike {
     JS_FUNCTION(WindowWrap, MoveBy) // moveBy(x,y)
     {
       JS_NOT_SUPPORTED("window.moveBy()");
+      return JS_UNDEF;
+    }
+    JS_END
+
+    JS_FUNCTION(WindowWrap, Stop)
+    {
+      StopExecution();
       return JS_UNDEF;
     }
     JS_END

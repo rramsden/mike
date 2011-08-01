@@ -106,7 +106,7 @@ namespace mike
     return browser_;
   }
   
-  History Frame::getHistory() const
+  History& Frame::getHistory()
   {
     return history_;
   }

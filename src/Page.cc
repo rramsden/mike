@@ -48,9 +48,10 @@ namespace mike
 
   Page::Page(Request* request, PageType type/*=kUnknownPage*/)
     : type_(type)
+    , stopped_(false)
   {
     request_ = request;
-    frame_ = NULL;
+    frame_   = NULL;
   }
 
   Page::~Page()
@@ -95,6 +96,11 @@ namespace mike
     return type_ == kHtmlPage;
   }
 
+  bool Page::isStopped()
+  {
+    return stopped_;
+  }
+  
   Frame* Page::getEnclosingFrame()
   {
     return frame_;
@@ -138,6 +144,11 @@ namespace mike
   
   
   //============================= OPERATIONS ===================================
+
+  void Page::stop()
+  {
+    stopped_ = true;
+  }
   
   void Page::reload()
   {

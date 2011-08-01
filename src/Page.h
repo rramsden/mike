@@ -137,6 +137,11 @@ namespace mike
     bool isHtml();
 
     /**
+     * \return Wheather page execution has been stopped.
+     */
+    bool isStopped();
+    
+    /**
      * Reloads page using request passed to constructor.
      */
     virtual void reload();
@@ -159,15 +164,21 @@ namespace mike
      * \return Absolute url based on current.
      */
     string getUrlFor(string url);
-
+    
     HtmlPage* asHtml();
     XmlPage* asXml();
-    
+
+    /**
+     * Stops downloading and processing this page.
+     */
+    virtual void stop();
+
   protected:
     http::Request* request_;
     PageType type_;
     Frame* frame_;
     void* ref_;
+    bool stopped_;
     
     virtual void enclose(Frame* frame);
   };
