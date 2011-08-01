@@ -1,6 +1,7 @@
 #ifndef _MIKE_FRAME_H_
 #define _MIKE_FRAME_H_
 
+#include <v8.h>
 #include <vector>
 #include <string>
 
@@ -9,9 +10,16 @@
 namespace mike
 {
   using namespace std;
+  using namespace v8;
 
   class Browser;
   class Page;
+  class JavaScriptHandler;
+
+  namespace glue
+  {
+    class WindowWrap;
+  }
 
   /**
    * Frame is a base class for all window objects. Also manages iframe and frameset
@@ -22,6 +30,8 @@ namespace mike
    */
   class Frame
   {
+    friend class glue::WindowWrap;
+    
   public:
     /**
      * Creates instance of frame.
@@ -181,6 +191,9 @@ namespace mike
     History history_;
     Browser* browser_;
     Frame* parent_;
+
+    Handle<Context> getScriptContext();
+    JavaScriptHandler* getScriptHandler();
   };
 }
 

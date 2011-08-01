@@ -76,6 +76,7 @@ namespace mike
 
   JavaScriptHandler::~JavaScriptHandler()
   {
+    eventCallbacks_.clear();
     window_.Dispose();
     context_.Dispose();
   }
@@ -135,4 +136,20 @@ namespace mike
   {
     return context_;
   }
+
+  Handle<Value> JavaScriptHandler::getEventCallback(string name)
+  {
+    map< string, Handle<Value> >::iterator found = eventCallbacks_.find(name);
+
+    if (found == eventCallbacks_.end())
+      return JS_UNDEF;
+    else
+      return (*found).second;
+  }
+  
+  void JavaScriptHandler::setEventCallback(string name, Handle<Value> callback)
+  {
+    eventCallbacks_[name] = callback;
+  }
+
 }

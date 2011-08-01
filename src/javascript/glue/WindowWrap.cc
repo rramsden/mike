@@ -28,6 +28,72 @@ namespace mike {
       instance_t->SetAccessor(JS_STR("top"), JS_GetTop);
       instance_t->SetAccessor(JS_STR("closed"), JS_GetClosed);
       instance_t->SetAccessor(JS_STR("status"), JS_GetStatus, JS_SetStatus);
+      // ... window events (TODO: figure out which one are webkit-only!)
+      instance_t->SetAccessor(JS_STR("onabort"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onbeforeunload"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onblur"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("oncanplay"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("oncanplaythrough"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onchange"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onclick"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("oncontextmenu"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ondblclick"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ondeviceorientation"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ondrag"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ondragend"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ondragenter"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ondragleave"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ondragover"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ondragstart"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ondrop"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ondurationchange"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onemptied"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onended"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onerror"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onfocus"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onhashchange"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("oninput"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("oninvalid"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onkeydown"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onkeypress"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onkeyup"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onload"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onloadeddata"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onloadedmetadata"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onloadstart"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onmessage"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onmousedown"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onmousemove"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onmouseout"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onmouseover"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onmouseup"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onmousewheel"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onoffline"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ononline"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onpagehide"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onpageshow"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onpause"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onplay"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onplaying"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onpopstate"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onprogress"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onratechange"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onreset"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onresize"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onscroll"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onsearch"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onseeked"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onseeking"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onselect"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onstalled"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onstorage"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onsubmit"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onsuspend"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("ontimeupdate"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onunload"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onvolumechange"), JS_GetEventCallback, JS_SetEventCallback);
+      instance_t->SetAccessor(JS_STR("onwaiting"), JS_GetEventCallback, JS_SetEventCallback);
+      // ... attributes
       instance_t->Set(JS_STR("defaultStatus"), JS_STR(""));
       instance_t->Set(JS_STR("defaultstatus"), JS_STR(""));
 
@@ -59,16 +125,14 @@ namespace mike {
     JS_GETTER(WindowWrap, Parent) // parent
     {
       JS_I_UNWRAP_HOLDER(Frame);
-      HtmlPage* page = self->getParent()->getPage()->asHtml();
-      return page->getScriptContext()->Global();
+      return self->getParent()->getScriptContext()->Global();
     }
     JS_END
 
     JS_GETTER(WindowWrap, Top) // top
     {
       JS_I_UNWRAP_HOLDER(Frame);
-      HtmlPage* page = self->getTop()->getPage()->asHtml();
-      return page->getScriptContext()->Global();
+      return self->getTop()->getScriptContext()->Global();
     }
     JS_END
 
@@ -90,6 +154,20 @@ namespace mike {
     {
       JS_I_UNWRAP_HOLDER(Frame);
       self->setStatus(JS_TO_UTF8(value->ToString()));
+    }
+    JS_END
+
+    JS_GETTER(WindowWrap, EventCallback)
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      return self->getScriptHandler()->getEventCallback(JS_TO_STR(property));
+    }
+    JS_END
+    
+    JS_SETTER(WindowWrap, EventCallback)
+    {
+      JS_I_UNWRAP_HOLDER(Frame);
+      self->getScriptHandler()->setEventCallback(JS_TO_STR(property), value);
     }
     JS_END
 

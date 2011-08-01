@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include <string>
+#include <map>
 #include <v8.h>
 
 namespace mike
@@ -36,9 +37,13 @@ namespace mike
 
     string evaluate(string source, string fname, unsigned int line);
     Handle<Context> getContext();
+
+    Handle<Value> getEventCallback(string name);
+    void setEventCallback(string name, Handle<Value> callback);
     
   protected:
     HtmlPage* page_;
+    map< string, Handle<Value> > eventCallbacks_;
     Persistent<Context> context_;
     Persistent<Object> window_;
   };

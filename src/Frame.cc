@@ -1,8 +1,12 @@
+#include <assert.h>
+
 #include "Browser.h"
 #include "Window.h"
 #include "Frame.h"
 #include "Page.h"
 #include "History.h"
+#include "html/HtmlPage.h"
+#include "javascript/JavaScriptHandler.h"
 
 namespace mike
 {
@@ -147,5 +151,21 @@ namespace mike
   void Frame::close()
   {
     // TODO: ...
+  }
+
+  /////////////////////////////// PROTECTED ////////////////////////////////////
+
+  Handle<Context> Frame::getScriptContext()
+  {
+    assert(!isBlank());
+    assert(getPage()->isHtml());
+    return getPage()->asHtml()->getScriptContext();
+  }
+
+  JavaScriptHandler* Frame::getScriptHandler()
+  {
+    assert(!isBlank());
+    assert(getPage()->isHtml());
+    return getPage()->asHtml()->getScriptHandler();
   }
 }

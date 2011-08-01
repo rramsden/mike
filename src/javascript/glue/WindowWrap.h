@@ -24,6 +24,8 @@ namespace mike
       JS_GETTER_D(Closed);
       JS_GETTER_D(Status);
       JS_SETTER_D(Status);
+      JS_GETTER_D(EventCallback);
+      JS_SETTER_D(EventCallback);
 
       // Functions
       

@@ -63,6 +63,7 @@ namespace mike
    */
   class HtmlPage : public XmlPage
   {
+    friend class Frame;
     friend class Window;
     friend class JavaScriptHandler;
     friend class glue::WindowWrap;
