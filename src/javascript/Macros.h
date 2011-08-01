@@ -84,6 +84,6 @@
 #define RETURN_WRAPPED(p) scope.Close(v8::External::New((void*)p))
 
 // TODO: change this for smth more friendly...
-#define JS_NOT_IMPLEMENTED(name) printf("JS: %s not implemented\n", name)
+#define JS_NOT_SUPPORTED(name) NotSupported(name)
 
 #endif /* _MIKE_JAVASCRIPT_MACROS_H_ */

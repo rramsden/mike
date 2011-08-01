@@ -17,5 +17,10 @@ namespace mike {
       assert(handle->InternalFieldCount() > field);
       handle->SetInternalField(field, value);
     }
+
+    void ObjectWrap::NotSupported(string what)
+    {
+      //printf("JS: %s is not supported\n", what.c_str());
+    }
   }
 }

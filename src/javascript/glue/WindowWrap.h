@@ -29,10 +29,11 @@ namespace mike
 
       // Functions
       
+      JS_FUNCTION_D(Close);
+      JS_FUNCTION_D(Print);
       JS_FUNCTION_D(Alert);
       JS_FUNCTION_D(Confirm);
       JS_FUNCTION_D(Prompt);
-      JS_FUNCTION_D(Close);
     };
   }
 }

@@ -18,6 +18,7 @@ namespace mike {
       proto_t->Set(JS_STR("confirm"), JS_FUNC_TPL(JS_Confirm));
       proto_t->Set(JS_STR("prompt"), JS_FUNC_TPL(JS_Prompt));
       proto_t->Set(JS_STR("close"), JS_FUNC_TPL(JS_Close));
+      proto_t->Set(JS_STR("print"), JS_FUNC_TPL(JS_Print));
 
       // Instance
       Handle<ObjectTemplate> instance_t = t->InstanceTemplate();
@@ -184,6 +185,13 @@ namespace mike {
       err->Set(JS_STR("close"), JS_INT(1));
 
       JS_THROW_OBJ(err);
+    }
+    JS_END
+
+    JS_FUNCTION(WindowWrap, Print)
+    {
+      JS_NOT_SUPPORTED("window.print");
+      return JS_UNDEF;
     }
     JS_END
     

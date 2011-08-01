@@ -33,6 +33,7 @@ class MikeJavaScriptWindowTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testStatus);
   CPPUNIT_TEST(testDefaultStatus);
   CPPUNIT_TEST(testEval);
+  CPPUNIT_TEST(testPrint);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -211,6 +212,12 @@ protected:
   {
     PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
     ASSERT_EQUAL(page->evaluate("window.eval('var a = 1'); a;"), "1");
+  }
+
+  void testPrint()
+  {
+    PageRef<HtmlPage> page = browser.open("http://localhost:4567/simple.html")->asHtml();
+    ASSERT_EQUAL(page->evaluate("window.print()"), "undefined");
   }
 };
 

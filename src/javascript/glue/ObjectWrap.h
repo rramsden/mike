@@ -65,6 +65,13 @@ namespace mike
        * \param field Which field to fill in.
        */
       static void Wrap(Handle<Object> handle, Handle<Value> value, int field=0);
+
+      /**
+       * Displays info about not supported features.
+       *
+       * /param what Description of feature.
+       */
+      static void NotSupported(string what);
     };
   }
 }
