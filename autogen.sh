@@ -1,2 +1,6 @@
 #!/bin/sh
-autoconf -i && automake && ./configure $@
+
+libtoolize &&
+autoconf -i &&
+automake --add-missing &&
+./configure $@
